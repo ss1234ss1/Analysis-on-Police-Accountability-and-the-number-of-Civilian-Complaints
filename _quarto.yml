@@ -4,7 +4,7 @@ project:
   resources: scripts
 
 website:
-  title: "MA [46]15 Final Project"
+  title: "Semster survivor"
   navbar:
     right:
       - about.qmd
