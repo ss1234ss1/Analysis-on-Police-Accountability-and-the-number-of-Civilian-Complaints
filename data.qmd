@@ -18,6 +18,12 @@ I recommend trying to find data that interests you and that you are knowledgeabl
 Initially, you will study _one dataset_ but later you will need to combine that data with another dataset. For this reason, I recommend finding data that has some date and/or location components. These types of data are conducive to interesting visualizations and analysis and you can also combine this data with other data that also has a date or location variable.
 Data from the census, weather data, economic data, are all relatively easy to combine with other data with time/location components.
 
+### Make sure to provide a link to the original data source. (Provide a link to the data description, not the actual data file.)
+https://cde.ucr.cjis.gov/
+
+### Give any details you can in regards to the number of rows and number of columns for your data.
+The number of columns shows every police and county sheriff department across the US that are available to the data. The number of rows indicate the amount of expenditures the police and sheriff departments have spent per resident with range of 0$ to 1100$.
+
 
 ## What makes a good data set?
 
