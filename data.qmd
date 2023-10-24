@@ -87,6 +87,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(gsheet)
 library(googlesheets4)
 library(dplyr)
+library(readxl)
 ```
 ## Firstly, we define functions to clean the data
 ```{r}
@@ -98,9 +99,8 @@ convert_na_to_zero <- function(data){
 ```
 ## The dataset is NIBRS.xlsx, including only 1 data sheet.
 ### 1.1
-#### Please input '1' in the console to authoritize the google account
 ```{r}
-nibrs = googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1rBU_Gbyn84UieVDjfkUf4AwsUaJLMk9iWvMkAl-8eSs/edit#gid=2041806838")
+nibrs = readxl::read_xlsx("NIBRS 2021 data.xlsx")
 head(nibrs)
 ```
 
