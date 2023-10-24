@@ -1,0 +1,14 @@
+---
+title: "First Blog"
+author: "Team 12 "
+date: "2023-10-23"
+date-modified: "2023-10-23"
+draft: FALSE
+---
+
+
+### Make sure to provide a link to the original data source. (Provide a link to the data description, not the actual data file.)
+https://cde.ucr.cjis.gov/
+
+### Give any details you can in regards to the number of rows and number of columns for your data.
+The number of columns shows every police and county sheriff department across the US that are available to the data. The number of rows indicate the amount of expenditures the police and sheriff departments have spent per resident with range of 0$ to 1100$.
