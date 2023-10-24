@@ -27,7 +27,7 @@ These three documents are presented in the form of Google Docs and CSV files. Co
 Does the increase in police funding have a decreased effect in settlement payment and reducing the number of internal affair complaints?
 How are civilian complaints, use of force, discrimination, and crime rate by race correlated and influence each other?
 
-###What challenges do you foresee?
+### What challenges do you foresee?
 
 :I believe that there might be some challenges that will arise when working on the final project, encompassing various aspects such as collaboration and dealing with technical skills. Regarding teamwork, I foresee potential challenges where team members may have different viewpoints on aspects like which facets of the dataset to focus on and what type of analysis to conduct. Additionally, we will likely need to address time management and communication issues. In terms of the technical aspects, the dataset we have appears to contain a significant amount of data, necessitating thorough data cleaning and organization. We will surely need to spend enough time on understanding and refining our skills for handling this data effectively.
 
