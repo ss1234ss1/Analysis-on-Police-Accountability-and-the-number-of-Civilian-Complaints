@@ -91,7 +91,6 @@ knitr::opts_chunk$set(echo = TRUE)
 ## activate the googlesheets4 library
 ```{r}
 library(gsheet)
-library(googlesheets4)
 library(dplyr)
 library(readxl)
 ```
