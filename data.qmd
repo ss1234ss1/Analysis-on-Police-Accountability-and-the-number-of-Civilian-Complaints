@@ -66,7 +66,7 @@ To link to this file, you can use `[cleaning script](/scripts/load_and_clean_dat
 
 
 ---
-title: "Untitled"
+title: "Data"
 output: html_document
 date: "2023-10-23"
 ---
@@ -332,7 +332,6 @@ You will
 * Organization, clarity, cleanliness of the page
   * Make sure to remove excessive warnings, use clean easy-to-read code (without side scrolling), organize with sections, use bullets and other organization tools, etc.
   * This page should be self-contained.
-  
   
   
 
