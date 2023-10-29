@@ -78,12 +78,14 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## download the library
 ```{r cars}
-#install.packages("googlesheet4")
+install.packages("googlesheet4")
 #install.packages("googledrive")
 #install.packages("gsheet")
 ```
 ## activate the googlesheets4 library
 ```{r}
+library(tidyverse)
+library(googlesheets4)
 library(gsheet)
 library(dplyr)
 library(readxl)
@@ -117,13 +119,17 @@ use_for_force = gsheet::gsheet2tbl("https://docs.google.com/spreadsheets/d/1AJFk
 head(use_for_force)
 ```
 
-
 ```{r}
-# convert all N/A data to 0
+# Keep only the columns matching the pattern
+use_for_force <- use_for_force %>%
+  select(matches("20\\d{2} Total \"Less Lethal Force\""), "ORI")
+# Convert all N/A data to 0
 use_for_force = convert_na_to_zero(use_for_force)
-head(use_for_force)
-```
 
+
+
+
+```
 
 
 
