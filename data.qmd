@@ -84,9 +84,10 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 ## activate the googlesheets4 library
 ```{r}
+library(tidyverse)
+library(googlesheets4)
 library(gsheet)
-library(dplyr)
-library(readxl)
+
 ```
 ## Firstly, we define functions to clean the data
 ```{r}
@@ -99,19 +100,36 @@ convert_na_to_zero <- function(data){
 
 
 ## The dataset is Fact checking.xlsx, including 12 data sheets
-### 2.1
+### 1.1
 ```{r}
-civilian_complaints = gsheet::gsheet2tbl("https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit#gid=121254631")
-head(civilian_complaints)
+civilian_complaints_id<-"https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit#gid=121254631"
+civilian_complaints<-read_sheet(civilian_complaints_id,
+                                na=c(" ","N/A","NA"))
 ```
 
 ```{r}
-# convert all N/A data to 0
-civilian_complaints = convert_na_to_zero(civilian_complaints)
+#Cleanse the data
 head(civilian_complaints)
+glimpse(civilian_complaints)
+summary(civilian_complaints)
+
+cleansed_df1<-civilian_complaints|>
+  janitor::clean_names()|>
+  mutate(
+    yers_of_complaints=as.Date(paste(years_of_complaints_data,sep="-"),format="%Y-%m-%d")
+  )|>
+  select(c(police_department,state,ori,civilian_complaints_reported_7,civilian_complaints_sustained_8))|>
+  mutate(
+    civilian_complaints_reported_7=if_else(is.na(civilian_complaints_reported_7),0,civilian_complaints_reported_7),
+    civilian_complaints_sustained_8=if_else(is.na(civilian_complaints_sustained_8),0,civilian_complaints_sustained_8)
+  )
+  
+
+summary(cleansed_df1)
+cleansed_df1
 ```
 
-### 2.2
+### 1.2
 ```{r}
 use_for_force = gsheet::gsheet2tbl("https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit#gid=1000577163")
 head(use_for_force)
@@ -128,7 +146,7 @@ head(use_for_force)
 
 
 
-### 2.11
+### 1.3 Reference
 ```{r}
 ori_lookup = gsheet::gsheet2tbl("https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit#gid=1179583443")
 head(ori_lookup)
