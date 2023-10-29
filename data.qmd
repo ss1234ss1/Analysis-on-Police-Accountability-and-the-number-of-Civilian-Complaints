@@ -18,6 +18,12 @@ I recommend trying to find data that interests you and that you are knowledgeabl
 Initially, you will study _one dataset_ but later you will need to combine that data with another dataset. For this reason, I recommend finding data that has some date and/or location components. These types of data are conducive to interesting visualizations and analysis and you can also combine this data with other data that also has a date or location variable.
 Data from the census, weather data, economic data, are all relatively easy to combine with other data with time/location components.
 
+### Make sure to provide a link to the original data source. (Provide a link to the data description, not the actual data file.)
+https://cde.ucr.cjis.gov/
+
+### Give any details you can in regards to the number of rows and number of columns for your data.
+The number of columns shows every police and county sheriff department across the US that are available to the data. The number of rows indicate the amount of expenditures the police and sheriff departments have spent per resident with range of 0$ to 1100$.
+
 
 ## What makes a good data set?
 
@@ -65,12 +71,247 @@ Instead, you can load in the results of this script, which could be plain text f
 To link to this file, you can use `[cleaning script](/scripts/load_and_clean_data.R)` wich appears as [cleaning script](/scripts/load_and_clean_data.R). 
 
 
+---
+title: "Data"
+output: html_document
+date: "2023-10-23"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## download the library
+```{r cars}
+#install.packages("googlesheet4")
+#install.packages("googledrive")
+#install.packages("gsheet")
+```
+## activate the googlesheets4 library
+```{r}
+library(gsheet)
+library(dplyr)
+library(readxl)
+```
+## Firstly, we define functions to clean the data
+```{r}
+convert_na_to_zero <- function(data){
+  result <- data %>% mutate_all(~ifelse(is.na(.), 0, .))
+  return(result)
+}
+
+```
+## The dataset is NIBRS.xlsx, including only 1 data sheet.
+### 1.1
+```{r}
+nibrs = readxl::read_xlsx("NIBRS 2021 data.xlsx")
+head(nibrs)
+```
+
+```{r}
+# convert all N/A data to 0
+nibrs = convert_na_to_zero(nibrs)
+head(nibrs)
+```
+## The dataset is Fact checking.xlsx, including 12 data sheets
+### 2.1
+```{r}
+civilian_complaints = gsheet::gsheet2tbl("https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit#gid=121254631")
+head(civilian_complaints)
+```
+
+```{r}
+# convert all N/A data to 0
+civilian_complaints = convert_na_to_zero(civilian_complaints)
+head(civilian_complaints)
+```
+
+### 2.2
+```{r}
+use_for_force = gsheet::gsheet2tbl("https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit#gid=1000577163")
+head(use_for_force)
+```
+
+
+```{r}
+# convert all N/A data to 0
+use_for_force = convert_na_to_zero(use_for_force)
+head(use_for_force)
+```
+### 2.3
+```{r}
+police_shooting = gsheet::gsheet2tbl("https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit#gid=146022739")
+head(police_shooting)
+```
+
+```{r}
+# convert all N/A data to 0
+police_shooting = convert_na_to_zero(police_shooting)
+head(police_shooting)
+```
+
+### 2.4
+```{r}
+misconduct_settlements = gsheet::gsheet2tbl("https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit#gid=146022739")
+head(misconduct_settlements)
+```
+
+```{r}
+# convert all N/A data to 0
+misconduct_settlements= convert_na_to_zero(misconduct_settlements)
+head(misconduct_settlements)
+```
+
+### 2.5
+```{r}
+remaining_data_gaps = gsheet::gsheet2tbl("https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit#gid=121254631")
+head(remaining_data_gaps)
+```
+
+
+```{r}
+# convert all N/A data to 0
+remaining_data_gaps = convert_na_to_zero(remaining_data_gaps)
+head(remaining_data_gaps)
+```
+
+### 2.6
+```{r}
+officer_demographics = gsheet::gsheet2tbl("https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit#gid=983556347")
+head(officer_demographics)
+```
+
+```{r}
+# convert all N/A data to 0
+officer_demographics = convert_na_to_zero(officer_demographics)
+head(officer_demographics)
+```
+
+### 2.7
+```{r}
+request_planning = gsheet::gsheet2tbl("https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit#gid=1024993607")
+head(request_planning)
+```
+
+```{r}
+# convert all N/A data to 0
+request_planning = convert_na_to_zero(request_planning)
+head(request_planning)
+```
+
+### 2.8
+```{r}
+request_status = gsheet::gsheet2tbl("https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit#gid=2032166349")
+head(request_status)
+```
+
+```{r}
+# convert all N/A data to 0
+request_status = convert_na_to_zero(request_status)
+head(request_status)
+```
+
+### 2.9
+```{r}
+data_collection_2022 = gsheet::gsheet2tbl("https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit#gid=1074568360")
+head(data_collection_2022)
+```
+
+```{r}
+# convert all N/A data to 0
+data_collection_2022 = convert_na_to_zero(data_collection_2022)
+head(data_collection_2022)
+```
+
+### 2.10
+```{r}
+data_collection_2023 = gsheet::gsheet2tbl("https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit#gid=1353032923")
+head(data_collection_2023)
+```
+
+```{r}
+# convert all N/A data to 0
+data_collection_2023 = convert_na_to_zero(data_collection_2023)
+head(data_collection_2023)
+```
+
+### 2.11
+```{r}
+ori_lookup = gsheet::gsheet2tbl("https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit#gid=1179583443")
+head(ori_lookup)
+```
+
+```{r}
+# convert all N/A data to 0
+ori_lookup = convert_na_to_zero(ori_lookup)
+head(ori_lookup)
+```
+
+### 2.12
+```{r}
+sheriffs_contract_cities = gsheet::gsheet2tbl("https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit#gid=390295808")
+head(sheriffs_contract_cities)
+```
+
+```{r}
+# convert all N/A data to 0
+sheriffs_contract_cities = convert_na_to_zero(sheriffs_contract_cities)
+head(sheriffs_contract_cities)
+```
+
+
+## The Dataset is MPVDatasetDownload.xlsx, including 3 data sheets
+### 3.1
+```{r}
+police_killings = gsheet::gsheet2tbl("https://docs.google.com/spreadsheets/d/19URywaaBdt840FlRp8srrVtAy4lKMlYF/edit#gid=1809994370")
+head(police_killings)
+```
+
+
+```{r}
+# convert all N/A data to 0
+police_killings = convert_na_to_zero(police_killings)
+head(police_killings)
+```
+
+
+```{r}
+# format the date column
+police_killings$'Date of Incident (month/day/year)' <- as.Date(police_killings$'Date of Incident (month/day/year)', format = "%m/%d/%Y")
+head(police_killings)
+```
+
+
+### 3.2
+```{r}
+killings_by_pd = gsheet::gsheet2tbl("https://docs.google.com/spreadsheets/d/19URywaaBdt840FlRp8srrVtAy4lKMlYF/edit#gid=1738071127")
+head(killings_by_pd)
+```
+
+```{r}
+# convert all N/A data to 0
+killings_by_pd = convert_na_to_zero(killings_by_pd)
+head(killings_by_pd)
+```
+### 3.3
+```{r}
+killings_by_state = gsheet::gsheet2tbl("https://docs.google.com/spreadsheets/d/19URywaaBdt840FlRp8srrVtAy4lKMlYF/edit#gid=2136142437")
+head(killings_by_state)
+```
+
+```{r}
+# convert all N/A data to 0
+killings_by_state = convert_na_to_zero(killings_by_state)
+head(killings_by_state)
+```
+
 
 ### What Challenges do you forsee?
 
 I believe that there might be some challenges that will arise when working on the final project, encompassing various aspects such as collaboration and dealing with technical skills. Regarding teamwork, I foresee potential challenges where team members may have different viewpoints on aspects like which facets of the dataset to focus on and what type of analysis to conduct. Additionally, we will likely need to address time management and communication issues. In terms of the technical aspects, the dataset we have appears to contain a significant amount of data, necessitating thorough data cleaning and organization. We will surely need to spend enough time on understanding and refining our skills for handling this data effectively.
 
-###What are the main questions you hope to address?
+### What are the main questions you hope to address?
 
 Does the increase in police funding have a decreased effect in settlement payment and reducing the number of internal affair complaints?
 
@@ -96,7 +337,6 @@ You will
 * Organization, clarity, cleanliness of the page
   * Make sure to remove excessive warnings, use clean easy-to-read code (without side scrolling), organize with sections, use bullets and other organization tools, etc.
   * This page should be self-contained.
-  
   
   
 

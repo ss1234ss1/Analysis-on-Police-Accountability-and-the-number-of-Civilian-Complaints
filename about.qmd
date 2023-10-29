@@ -25,16 +25,15 @@ The members of this team are below.
 ## Tian Xie 
 ## Jaden Noh
 # I am a junior this semester, majoring in data science. https://github.com/ss1234ss1
-## Jianing Yi
-https://github.com/jianing724
+## Jianing Yi https://github.com/jianing724
 ## Serena Theobald
+# I am a junior studying data science with a minor in Statistics.https://github.com/serenatheo
+
 Our github page:
 https://github.com/sussmanbu/ma-4615-fa23-final-project-team-12.git
 
 <!-- Please leave in the information below -->
-##Serena Theobald
-Serena is a data science junior with a statistics minor.
-https://github.com/serenatheo
+
 
 ### About this Template.
 
