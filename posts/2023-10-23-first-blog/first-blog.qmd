@@ -8,7 +8,13 @@ draft: FALSE
 
 
 ### Make sure to provide a link to the original data source. (Provide a link to the data description, not the actual data file.)
-https://cde.ucr.cjis.gov/
+https://cde.ucr.cjis.gov
+
+https://drive.google.com/file/d/1ovHl7CIY3xYjSbUGDGQINTUPVYtXJ7Tz/view?usp=sharing
+
+https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit?usp=sharing
+
+https://docs.google.com/spreadsheets/d/19URywaaBdt840FlRp8srrVtAy4lKMlYF/edit?usp=sharing&ouid=114740779141954747870&rtpof=true&sd=true
 
 ### Give any details you can in regards to the number of rows and number of columns for your data.
 The number of columns shows every police and county sheriff department across the US that are available to the data. The number of rows indicate the amount of expenditures the police and sheriff departments have spent per resident with range of 0$ to 1100$.
