@@ -102,9 +102,9 @@ convert_na_to_zero <- function(data){
 ## The dataset is Fact checking.xlsx, including 12 data sheets
 ### 1.1
 ```{r}
-civilian_complaints_id<-"https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit#gid=121254631"
+civilian_complaints_id<- "https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit#gid=121254631"
 civilian_complaints<-read_sheet(civilian_complaints_id,
-                                na=c(" ","N/A","NA"))
+                                   na=c(" ","N/A","NA"))
 ```
 
 ```{r}
@@ -118,10 +118,12 @@ cleansed_df1<-civilian_complaints|>
   mutate(
     yers_of_complaints=as.Date(paste(years_of_complaints_data,sep="-"),format="%Y-%m-%d")
   )|>
-  select(c(police_department,state,ori,civilian_complaints_reported_7,civilian_complaints_sustained_8))|>
+  select(c(police_department,state,ori,civilian_complaints_sustained_2020,civilian_complaints_reported_2020,discrimination_complaints_reported_2020,discrimination_complaints_sustained_2020))|>
   mutate(
-    civilian_complaints_reported_7=if_else(is.na(civilian_complaints_reported_7),0,civilian_complaints_reported_7),
-    civilian_complaints_sustained_8=if_else(is.na(civilian_complaints_sustained_8),0,civilian_complaints_sustained_8)
+   civilian_complaints_sustained_2020=if_else(is.na(civilian_complaints_sustained_2020),0,civilian_complaints_sustained_2020),
+   discrimination_complaints_reported_2020=if_else(is.na(discrimination_complaints_reported_2020),0,discrimination_complaints_reported_2020),
+    discrimination_complaints_sustained_2020=if_else(is.na(discrimination_complaints_sustained_2020),0,discrimination_complaints_sustained_2020)
+    
   )
   
 
@@ -131,20 +133,19 @@ cleansed_df1
 
 ### 1.2
 ```{r}
-use_for_force = gsheet::gsheet2tbl("https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit#gid=1000577163")
-head(use_for_force)
+use_for_force_original <-"https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit#gid=1000577163"
+use_for_force_original <- read_sheet(use_for_force_original,sheet = 'Use of Force Data',na=c(" ","N/A","NA"))
+use_for_force_original
+colnames(use_for_force_original)[colnames(use_for_force_original) == "2020 Total \"Less Lethal Force\""] <- "Total_Less_lethal_force_2020"
 ```
 
 ```{r}
 # Keep only the columns matching the pattern
-use_for_force <- use_for_force %>%
-  select(matches("20\\d{2} Total \"Less Lethal Force\""), "ORI")
-# Convert all N/A data to 0
-use_for_force = convert_na_to_zero(use_for_force)
+use_for_force <- use_for_force_original %>%
+  select(matches("Total_Less_lethal_force_2020", "ORI","Population","Police Department")) %>% 
+  mutate(Total_Less_lethal_force_2020=if_else(is.na(Total_Less_lethal_force_2020),0,Total_Less_lethal_force_2020))
 
-
-
-
+print(use_for_force)
 ```
 
 
@@ -152,7 +153,8 @@ use_for_force = convert_na_to_zero(use_for_force)
 
 ### 1.3 Reference
 ```{r}
-ori_lookup = gsheet::gsheet2tbl("https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit#gid=1179583443")
+ori_lookup <- "https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit#gid=1179583443"
+ori_lookup <- read_sheet(ori_lookup, sheet = 'ORI Lookup',na=c(" ","N/A","NA"))
 head(ori_lookup)
 ```
 
