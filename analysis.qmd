@@ -29,25 +29,34 @@ print(ls())
 
 ```{r}
 table(cleansed_df1$ORI)
-colnames(cleansed_df1)[colnames(cleansed_df1) == "ori"] <- "ORI"
-ori_frequency_df1 <- table(cleansed_df1$ORI)
-values_with_frequency_gt_1 <- names(ori_frequency_df1[ori_frequency_df1 = 1])
-cleansed_df1 <- cleansed_df1[cleansed_df1$ORI %in% values_with_frequency_gt_1, ]
-print(cleansed_df1)
+filtered_cleansed_df1 <- cleansed_df1 %>%
+  group_by(ORI) %>%
+  filter(n() == 1)
+print(filtered_cleansed_df1)
 
-ori_frequency_use <- table(use_for_force$ORI)
-values_with_frequency_gt_1 <- names(ori_frequency_use[ori_frequency_use = 1])
-use_for_force <- use_for_force[use_for_force$ORI %in% values_with_frequency_gt_1, ]
-print(filtered_data)
+filtered_use_for_force <- use_for_force %>%
+  group_by(ORI) %>%
+  filter(n() == 1)
+print(filtered_use_for_force)
 ```
 
 ```{r}
-table(use_for_force$ORI)
-colnames(use_for_force)[colnames(use_for_force) == "Police Department"] <- "police_department"
-use_for_force
-cleansed_df1
-merged_data <- merge(use_for_force,cleansed_df1, by = "police_department", all = TRUE)
-head(merged_data)
+colnames(filtered_use_for_force)[colnames(filtered_use_for_force) == "Police Department"] <- "police_department"
+
+merged_data <- merge(filtered_use_for_force,filtered_cleansed_df1, by = "ORI", all = TRUE)
+merged_data <- subset(merged_data, select = -police_department.x)
+print(merged_data)
+```
+## Heatmap
+```{r}
+library(gplots)
+library(corrplot)
+colnames(merged_data)
+selected_columns <- c("Total_Less_lethal_force_2020","Population","civilian_complaints_sustained_2020","discrimination_complaints_sustained_2020")
+cor_matrix <- cor(merged_data[selected_columns], use = "complete.obs")
+corrplot(cor_matrix, method = "color", type = "full", order = "hclust", 
+         tl.col = "black", tl.srt = 45, 
+         diag = TRUE) 
 ```
 
 

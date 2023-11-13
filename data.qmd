@@ -78,7 +78,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## download the library
 ```{r cars}
-
+install.packages("googlesheet4")
 #install.packages("googledrive")
 #install.packages("gsheet")
 ```
@@ -128,7 +128,7 @@ cleansed_df1<-civilian_complaints|>
   
 
 summary(cleansed_df1)
-cleansed_df1
+colnames(cleansed_df1)[colnames(cleansed_df1) == "ori"] <- "ORI"
 ```
 
 ### 1.2
@@ -142,9 +142,7 @@ colnames(use_for_force_original)[colnames(use_for_force_original) == "2020 Total
 ```{r}
 # Keep only the columns matching the pattern
 use_for_force <- use_for_force_original %>%
-  select(matches("Total_Less_lethal_force_2020", "ORI","Population","Police Department")) %>% 
-  mutate(Total_Less_lethal_force_2020=if_else(is.na(Total_Less_lethal_force_2020),0,Total_Less_lethal_force_2020))
-
+  select("Total_Less_lethal_force_2020", "ORI","Population","Police Department")
 print(use_for_force)
 ```
 
