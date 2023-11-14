@@ -83,6 +83,23 @@ null_model_poisson <- stan_glm(Total_Less_lethal_force_2020 ~ 1, data = merged_d
 summary(null_model_poisson)
 ```
 
+
+```{r step 3 Residual Plots}
+merged_data<-merged_data|>
+  filter(is.na(Total_Less_lethal_force_2020)==FALSE & is.na(civilian_complaints_sustained_2020)==FALSE)
+merged_data
+
+regression_model<-lm(civilian_complaints_sustained_2020~Total_Less_lethal_force_2020,data=merged_data)
+
+res<-resid(regression_model)
+
+plot(fitted(regression_model),res)|>
+abline(0,0) 
+qqnorm(res)
+plot(density(res))
+
+summary(res)
+```
 ## Note on Attribution
 
 In general, you should try to provide links to relevant resources, especially those that helped you. You don't have to link to every StackOverflow post you used but if there are explainers on aspects of the data or specific models that you found helpful, try to link to those. Also, try to link to other sources that might support (or refute) your analysis. These can just be regular hyperlinks. You don't need a formal citation.
