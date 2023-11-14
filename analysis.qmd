@@ -52,13 +52,36 @@ print(merged_data)
 library(gplots)
 library(corrplot)
 colnames(merged_data)
-selected_columns <- c("Total_Less_lethal_force_2020","Population","civilian_complaints_sustained_2020","discrimination_complaints_sustained_2020")
+selected_columns <- c("Total_Less_lethal_force_2020","Population","civilian_complaints_sustained_2020","discrimination_complaints_sustained_2020", )
 cor_matrix <- cor(merged_data[selected_columns], use = "complete.obs")
 corrplot(cor_matrix, method = "color", type = "full", order = "hclust", 
          tl.col = "black", tl.srt = 45, 
          diag = TRUE) 
 ```
+```{r}
+# Assuming you've already installed and loaded necessary packages and your data is loaded
 
+# Running a simple linear regression
+model <- lm(civilian_complaints_sustained_2020/Population ~ Total_Less_lethal_force_2020/Population, data = merged_data)
+
+# Viewing the summary of the model
+summary(model)
+
+# Making predictions
+predictions <- predict(model, newdata = merged_data)
+
+# Plotting (with ggplot2)
+library(ggplot2)
+ggplot(merged_data, aes(x = 1000*Total_Less_lethal_force_2020/Population, y = 1000*civilian_complaints_sustained_2020/Population)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+```{r}
+null_model_poisson <- stan_glm(Total_Less_lethal_force_2020 ~ 1, data = merged_data, family = poisson())
+
+summary(null_model_poisson)
+```
 
 ## Note on Attribution
 
@@ -78,7 +101,6 @@ If you are directly quoting from a source, please make that clear. You can show 
 
 ## Rubric: On this page
 
-You will
 
 
 * Introduce what motivates your Data Analysis (DA)
