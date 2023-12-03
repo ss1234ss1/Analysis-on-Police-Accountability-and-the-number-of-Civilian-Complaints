@@ -52,7 +52,7 @@ print(merged_data)
 library(gplots)
 library(corrplot)
 colnames(merged_data)
-selected_columns <- c("Total_Less_lethal_force_2020","Population","civilian_complaints_sustained_2020","discrimination_complaints_sustained_2020", )
+selected_columns <- c("Total_Less_lethal_force_2020","Population","civilian_complaints_sustained_2020","discrimination_complaints_sustained_2020")
 cor_matrix <- cor(merged_data[selected_columns], use = "complete.obs")
 corrplot(cor_matrix, method = "color", type = "full", order = "hclust", 
          tl.col = "black", tl.srt = 45, 
