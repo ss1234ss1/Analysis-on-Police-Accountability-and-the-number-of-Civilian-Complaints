@@ -78,6 +78,9 @@ ggplot(merged_data, aes(x = 1000*Total_Less_lethal_force_2020/Population, y = 10
 ```
 
 ```{r}
+#install.packages("rstanarm")
+library(rstanarm)
+
 null_model_poisson <- stan_glm(Total_Less_lethal_force_2020 ~ 1, data = merged_data, family = poisson())
 
 summary(null_model_poisson)
@@ -85,8 +88,10 @@ summary(null_model_poisson)
 
 
 ```{r step 3 Residual Plots}
-merged_data<-merged_data|>
-  filter(is.na(Total_Less_lethal_force_2020)==FALSE & is.na(civilian_complaints_sustained_2020)==FALSE)
+merged_data <- subset(merged_data, !is.na(Total_Less_lethal_force_2020) & !is.na(civilian_complaints_sustained_2020))
+
+#merged_data<-merged_data|>
+#  filter(is.na(Total_Less_lethal_force_2020)==FALSE & is.na(civilian_complaints_sustained_2020)==FALSE)
 merged_data
 
 regression_model<-lm(civilian_complaints_sustained_2020~Total_Less_lethal_force_2020,data=merged_data)
