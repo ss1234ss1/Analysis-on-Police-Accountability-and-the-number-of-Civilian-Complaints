@@ -5,6 +5,7 @@ toc: true
 draft: false
 ---
 
+
 ![](images/data-import-cheatsheet-thumbs.png)
 
 
@@ -46,12 +47,14 @@ For larger datasets, you'll need to create a new folder in the project root dire
 
 Your [load_and_clean_data.R](/scripts/load_and_clean_data.R) file is how you will load and clean your data. Here is a an example of a very simple one.
 
+
 ```{r}
 # source(
 #   "scripts/load_and_clean_data.R",
 #   echo = TRUE # Use echo=FALSE or omit it to avoid code output  
 # )
 ```
+
 You should never use absolute paths (eg. `/Users/danielsussman/path/to/project/` or `C:\MA415\\Final_Project\`).
 
 You might consider using the `here` function fomr the [`here` package](https://here.r-lib.org/articles/here.html) to avoid path problems.
@@ -65,6 +68,7 @@ Instead, you can load in the results of this script, which could be plain text f
 To link to this file, you can use `[cleaning script](/scripts/load_and_clean_data.R)` wich appears as [cleaning script](/scripts/load_and_clean_data.R). 
 
 
+
 ---
 title: "Untitled"
 output: html_document
@@ -76,7 +80,9 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
+
 ## download the library
+
 ```{r cars}
 options(repos = c(CRAN = "https://cran.rstudio.com"))
 #install.packages("googlesheet4")
@@ -84,7 +90,9 @@ options(repos = c(CRAN = "https://cran.rstudio.com"))
 #install.packages("gsheet")
 #install.packages("readr")
 ```
+
 ## activate the googlesheets4 library
+
 ```{r}
 library(tidyverse)
 library(googlesheets4)
@@ -93,7 +101,9 @@ library(googledrive)
 library(readr)
 
 ```
+
 ## Firstly, we define functions to clean the data
+
 ```{r}
 # convert_na_to_zero <- function(data){
 #   result <- data %>% mutate_all(~ifelse(is.na(.), 0, .))
@@ -103,8 +113,10 @@ library(readr)
 ```
 
 
+
 ## The dataset is Fact checking.xlsx, including 12 data sheets
 ### 1.1
+
 ```{r}
  civilian_complaints_id<- "https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit#gid=121254631"
  civilian_complaints<-read_sheet(civilian_complaints_id,
@@ -138,7 +150,9 @@ cleansed_df1 = read_csv(file='./data/cleansed_df1.csv', show_col_types = FALSE)
 
 ```
 
+
 ### 1.2
+
 ```{r}
 # use_for_force_original <-"https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit#gid=1000577163"
 # use_for_force_original <- read_sheet(use_for_force_original,sheet = 'Use of Force Data',na=c(" ","N/A","NA"))
@@ -161,7 +175,9 @@ view(use_for_force)
 
 
 
+
 ### 1.3 Reference
+
 ```{r}
 # ori_lookup <- "https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit#gid=1179583443"
 # ori_lookup <- read_sheet(ori_lookup, sheet = 'ORI Lookup',na=c(" ","N/A","NA"))
@@ -175,6 +191,7 @@ view(use_for_force)
 # write.csv(ori_lookup, file='./data/ori_lookup.csv', row.names = FALSE)
 ori_lookup = read_csv(file='./data/ori_lookup.csv',show_col_types = FALSE)
 ```
+
 
 
 
