@@ -25,7 +25,7 @@ cleansed_df1 = read_csv(file='./data/cleansed_df1.csv', show_col_types = FALSE)
 use_for_force_original = read_csv(file='./data/use_for_force_original.csv',show_col_types = FALSE)
 use_for_force = read_csv(file='./data/use_for_force.csv',show_col_types = FALSE)
 ori_lookup = read_csv(file='./data/ori_lookup.csv',show_col_types = FALSE)
-civilian_complians= read_csv(file='./data/civilian_complians.csv', show_col_types = FALSE)
+civilian_complaints= read_csv(file='./data/civilian_complaints.csv', show_col_types = FALSE)
 ```
 
 
@@ -81,6 +81,118 @@ library(ggplot2)
 ggplot(merged_data, aes(x = 1000*Total_Less_lethal_force_2020/Population, y = 1000*civilian_complaints_sustained_2020/Population)) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE)
+```
+
+```{r}
+#Bar plot
+library(dplyr)
+library(ggplot2)
+cities_with_most_force <- merged_data %>%
+  group_by(police_department.y) %>%  
+  summarise(Recorded_Civilian_Cases = sum(civilian_complaints_reported_2020, na.rm = TRUE)) %>%
+  arrange(desc(Recorded_Civilian_Cases))
+
+# Display the top cities (You can change the number to display more or fewer cities)
+head(cities_with_most_force, n = 6)
+
+#top_cities_per_capita <- merged_data %>%
+#  group_by(police_department.y) %>%
+#  summarise(Total_Complaints = sum(civilian_complaints_reported_2020, na.rm = TRUE),
+#            Population = mean(Population)) %>% 
+#  mutate(Complaints_Per_Capita = (Total_Complaints / Population) * 100000) %>%
+#  arrange(desc(Complaints_Per_Capita))
+
+#top_cities_per_capita <- head(top_cities_per_capita, 6)
+#top_cities_per_capita
+
+
+# Define the key cities
+key_cities <- c("New York", "Chicago", "Los Angeles", "Oakland", "Dallas", "Detroit")
+
+# Filter the dataset for key cities
+filtered_data <- merged_data %>%
+  filter(police_department.y %in% key_cities)
+
+#print(summary(filtered_data$civilian_complaints_reported_2020))
+#filtered_data %>% 
+#  group_by(police_department.y) %>% 
+#  summarise(count = n())
+
+
+# Create the bar plot for civilian complaints
+ggplot(filtered_data, aes(x = police_department.y, y = civilian_complaints_reported_2020)) +
+  geom_bar(stat = "identity", fill = "blue") +
+  labs(title = "Civilian Complaints Reported for Top 6 Cities for 2020",
+       x = "City",
+       y = "Number of Complaints Reported") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+
+
+#2017
+cities_with_most_force2 <- civilian_complaints %>%
+  group_by(`Police Department`) %>%  
+  summarise(Recorded_Civilian_Cases = sum(civilian_complaints_reported_2017, na.rm = TRUE)) %>%
+  arrange(desc(Recorded_Civilian_Cases))
+
+
+head(cities_with_most_force2, n = 7)
+
+key_cities <- c("New York", "Los Angeles", "Seattle", "Austin", "Oakland", "Detroit")
+
+# Filter the dataset for key cities
+filtered_data <- civilian_complaints %>%
+  filter(`Police Department` %in% key_cities)
+
+# Summarize the total complaints per state for 2018
+top_departments_2017 <- filtered_data %>%
+  group_by(`Police Department`) %>%
+  summarise(Total_Complaints_2017 = sum(civilian_complaints_reported_2017, na.rm = TRUE)) %>%
+  arrange(desc(Total_Complaints_2017)) %>%
+  slice_head(n = 7)  # Select the top 6 departments
+
+# Create the bar chart
+ggplot(top_departments_2017, aes(x = `Police Department`, y = Total_Complaints_2017)) +
+  geom_bar(stat = "identity", fill = "green") +
+  labs(title = "Top 6 Cities with Most Civilian Complaints Reported in 2017",
+       x = "Cities",
+       y = "Number of Complaints Reported") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+#2021
+cities_with_most_force2 <- civilian_complaints %>%
+  group_by(`Police Department`) %>%  
+  summarise(Recorded_Civilian_Cases = sum(civilian_complaints_reported_2021, na.rm = TRUE)) %>%
+  arrange(desc(Recorded_Civilian_Cases))
+
+
+head(cities_with_most_force2, n = 7)
+
+key_cities <- c("New York", "Chicago", "Fort Worth", "Los Angeles", "Detroit", "Colorado Springs")
+
+# Filter the dataset for key cities
+filtered_data <- civilian_complaints %>%
+  filter(`Police Department` %in% key_cities)
+
+# Summarize the total complaints per state for 2018
+top_departments_2021 <- filtered_data %>%
+  group_by(`Police Department`) %>%
+  summarise(Total_Complaints_2021 = sum(civilian_complaints_reported_2021, na.rm = TRUE)) %>%
+  arrange(desc(Total_Complaints_2021)) %>%
+  slice_head(n = 7)  # Select the top 6 departments
+
+# Create the bar chart
+ggplot(top_departments_2021, aes(x = `Police Department`, y = Total_Complaints_2021)) +
+  geom_bar(stat = "identity", fill = "red") +
+  labs(title = "Top 6 Cities with Most Civilian Complaints Reported in 2021",
+       x = "Cities",
+       y = "Number of Complaints Reported") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+
 ```
 
 ```{r}
