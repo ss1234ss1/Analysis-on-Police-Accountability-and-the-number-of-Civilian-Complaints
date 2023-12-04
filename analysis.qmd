@@ -25,6 +25,7 @@ cleansed_df1 = read_csv(file='./data/cleansed_df1.csv', show_col_types = FALSE)
 use_for_force_original = read_csv(file='./data/use_for_force_original.csv',show_col_types = FALSE)
 use_for_force = read_csv(file='./data/use_for_force.csv',show_col_types = FALSE)
 ori_lookup = read_csv(file='./data/ori_lookup.csv',show_col_types = FALSE)
+civilian_complians= read_csv(file='./data/civilian_complians.csv', show_col_types = FALSE)
 ```
 
 
