@@ -1,0 +1,512 @@
+congress <- read_csv("~/Documents/Documents - Jenny Yi’s MacBook Air/mssp/ma678/ROS-Examples-master/Congress/data/congress.csv")
+# install.packages("VGAM")
+library(VGAM)
+library(haven)
+lalonde <- read_dta("~/Documents/Documents - Jenny Yi’s MacBook Air/mssp/ma678/ROS-Examples-master/Lalonde/NSW_dw_obs.dta")
+lalonde
+m15.7 <- vglm(log(re78+1) ~ treat + re75, tobit(Lower = 0, Upper=10,type.fitted="censored"), data=lalonde, maxit = 500)
+summary(m15.7)
+plot(predict(m15.7, type = "response",newdata=lalonde)[,1],log(lalonde$re78+1), alpha =0.5);
+abline(0,1)
+library("MCMCpack")
+# install.packages("VGAM")
+library(VGAM)
+library(haven)
+lalonde <- read_dta("~/Documents/Documents - Jenny Yi’s MacBook Air/mssp/ma678/ROS-Examples-master/Lalonde/NSW_dw_obs.dta")
+lalonde
+m15.7 <- vglm(log(re78+1) ~ treat + re75, tobit(Lower = 0, Upper=10,type.fitted="censored"), data=lalonde, maxit = 500)
+summary(m15.7)
+plot(predict(m15.7, type = "response",newdata=lalonde)[,1],log(lalonde$re78+1), alpha =0.5);
+abline(0,1)
+install.packages("MCMCpack")
+library("MCMCpack")
+set.seed(123)
+bayes.tobit <- MCMCtobit(log(re78+1) ~ treat + re75, below = 0,
+mcmc = 30000, verbose = 1000, data=lalonde)
+summary(bayes.tobit)
+m15.8a = stan_glm(vote ~ pastvote + inc,data=congress88,refresh=0)
+m15.8a = stan_glm(vote ~ pastvote + inc,data=congress,refresh=0)
+library(readr)
+congress <- read_csv("~/Documents/Documents - Jenny Yi’s MacBook Air/mssp/ma678/ROS-Examples-master/Congress/data/congress.csv")
+m15.8a = stan_glm(vote ~ pastvote + inc,data=congress,refresh=0)
+m15.8a = stan_glm(v88_adj ~ v86_adj + inc88,data=congress,refresh=0)
+print(m15.8a,digits=2)
+congress <- data.frame(vote=congress$v88_adj,
+pastvote=congress$v86_adj,inc=congress$inc88)
+m15.8a = stan_glm(vote ~ pastvote + inc,data=congress,refresh=0)
+print(m15.8a,digits=2)
+congress <- data.frame(vote=congress$v88_adj,
+pastvote=congress$v86_adj,inc=congress$inc88)
+m15.8a = stan_glm(vote ~ pastvote + inc,data=congress,refresh=0)
+congress <- data.frame(vote=congress$v88_adj,
+pastvote=congress$v86_adj,inc=congress$inc88)
+m15.8a = stan_glm(vote ~ pastvote + inc,data=congress,refresh=0)
+m15.8a = stan_glm(vote ~ pastvote + inc, data=congress,refresh=0)
+library(readr)
+congress <- read_csv("~/Documents/Documents - Jenny Yi’s MacBook Air/mssp/ma678/ROS-Examples-master/Congress/data/congress.csv")
+view(congress)
+library(readr)
+congress <- read_csv("~/Documents/Documents - Jenny Yi’s MacBook Air/mssp/ma678/ROS-Examples-master/Congress/data/congress.csv")
+View(congress)
+congress_a <- data.frame(vote=congress$v88_adj,pastvote=congress$v86_adj,inc=congress$inc88)
+m15.8a = stan_glm(vote ~ pastvote + inc, data=congress_a,refresh=0)
+print(m15.8a,digits=2)
+post = posterior_predict(m15.8a)
+ppc_dens_overlay(post[1:100,],y=congress$vote)
+congress_a <- data.frame(vote=congress$v88_adj,pastvote=congress$v86_adj,inc=congress$inc88)
+m15.8a = stan_glm(vote ~ pastvote + inc, data=congress_a,refresh=0)
+print(m15.8a,digits=2)
+post = posterior_predict(m15.8a)
+ppc_dens_overlay(post[1:100,],y=congress_a$vote)
+tfit = brm(vote ~ pastvote + inc,data=congress_a,family="student",chains=2,iter=2000,refresh=0)
+install.packages("brms")
+library(brms)
+# install.packages("brms")
+library(brms)
+tfit = brm(vote ~ pastvote + inc,data=congress_a,family="student",chains=2,iter=2000,refresh=0)
+print(tfit)
+postt = posterior_predict(tfit)
+ppc_dens_overlay(congress_a$vote,postt[1:50,])
+congress_a$votebin = ifelse(congress_a$vote>0.5,1,0)
+log = stan_glm(votebin ~ pastvote + inc, data=congress_a,family=binomial(link="logit"),refresh=0)
+postlog = posterior_predict(log,draws=1009)
+ppc_dens_overlay(postlog88[1:100,], y=congress_a$votebin)
+congress_a$votebin = ifelse(congress_a$vote>0.5,1,0)
+log = stan_glm(votebin ~ pastvote + inc, data=congress_a,family=binomial(link="logit"),refresh=0)
+postlog = posterior_predict(log,draws=1009)
+ppc_dens_overlay(postlog[1:100,], y=congress_a$votebin)
+rob = glm(votebin ~ pastvote + inc, data=congress_a,family=binomial(link=gosset(2)))
+ggplot(congress_a) +
+aes(x=pastvote) +
+geom_point(aes(y=votebin),color="pink") +
+geom_point(aes(y=invlogit(predict(rob))),color="skyblue")
+fit15b = stan_glm(fupacts ~ bs_hiv, data=risky_a, refresh=0, family=neg_binomial_2(link="log"))
+sim = posterior_predict(fit15b,draws=1000)
+ppc_dens_overlay(risky_a$fupacts,sim[1:100,])
+store0b = check0(sim)
+store10b = check10(sim)
+ggplot() +
+geom_histogram(aes(x=store0b)) +
+geom_vline(xintercept=check0(risk$fupacts_R)) +
+xlim(c(0,1))
+fit15b = stan_glm(fupacts ~ bs_hiv, data=risky_a, refresh=0, family=neg_binomial_2(link="log"))
+sim = posterior_predict(fit15b,draws=1000)
+ppc_dens_overlay(risky_a$fupacts,sim[1:100,])
+store0b = check0(sim)
+store10b = check10(sim)
+ggplot() +
+geom_histogram(aes(x=store0b)) +
+geom_vline(xintercept=check0(risky_a$fupacts_R)) +
+xlim(c(0,1))
+ggplot() +
+geom_histogram(aes(x=store10b)) +
+geom_vline(xintercept=check10(risky_a$fupacts_R)) +
+xlim(c(0,1))
+mc = stan_glm(fupacts_R ~ bs_hiv + bupacts, data=risky_a, refresh=0, family=neg_binomial_2(link="log"))
+mc = stan_glm(fupacts ~ bs_hiv + bupacts, data=risky_a, refresh=0, family=neg_binomial_2(link="log"))
+sim = posterior_predict(mc,draws=1000)
+ppc_dens_overlay(risky_a$fupacts_R,sim[1:100,])
+mc = stan_glm(fupacts ~ bs_hiv + bupacts, data=risky_a, refresh=0, family=neg_binomial_2(link="log"))
+sim = posterior_predict(mc,draws=1000)
+ppc_dens_overlay(risky_a$fupacts,sim[1:100,])
+store0c = check0(sim)
+store10c = check10(sim)
+ggplot() +
+geom_histogram(aes(x=store0c)) +
+geom_vline(xintercept=check0(risky_a$fupacts)) +
+xlim(c(0,1))
+mc = stan_glm(fupacts ~ bs_hiv + bupacts, data=risky_a, refresh=0, family=neg_binomial_2(link="log"))
+sim = posterior_predict(mc,draws=1000)
+ppc_dens_overlay(risky_a$fupacts,sim[1:100,])
+store0c = check0(sim)
+store10c = check10(sim)
+ggplot() +
+geom_histogram(aes(x=store0c)) +
+geom_vline(xintercept=check0(risky_a$fupacts)) +
+xlim(c(0,1))
+ggplot() +
+geom_histogram(aes(x=store10c)) +
+geom_vline(xintercept=check10(risky_a$fupacts)) +
+xlim(c(0,1))
+lalonde$bin78 = ifelse(lalonde$re78==0,0,1)
+lalog = stan_glm(bin78 ~ treat + re75, data=lalonde, family=binomial(link="logit"),refresh =0)
+lalin = stan_glm(log(re78) ~ treat + re75, data=lalonde[lalonde$bin78==1,], refresh=0)
+sim = posterior_predict(lalog,draws=1000) sim2 = posterior_predict(lalin,draws=1000)
+lalonde$bin78 = ifelse(lalonde$re78==0,0,1)
+lalog = stan_glm(bin78 ~ treat + re75, data=lalonde, family=binomial(link="logit"),refresh =0)
+lalin = stan_glm(log(re78) ~ treat + re75, data=lalonde[lalonde$bin78==1,], refresh=0)
+sim = posterior_predict(lalog,draws=1000)
+sim2 = posterior_predict(lalin,draws=1000)
+pp_check(lalog)
+pp_check(lalin)
+library(readr)
+congress <- read_csv("~/Documents/Documents - Jenny Yi’s MacBook Air/mssp/ma678/ROS-Examples-master/Congress/data/congress.csv")
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(rstanarm)
+library(readr)
+risky <- read_csv("~/Documents/Documents - Jenny Yi’s MacBook Air/mssp/ma678/ROS-Examples-master/RiskyBehavior/data/risky.csv")
+## Model this outcome as a function of treatment assignment using a Poisson regression.
+risky_a <- risky %>%
+mutate(couples = as.factor(couples)) %>%
+mutate(women_alone = as.factor(women_alone)) %>%
+mutate(fupacts = as.integer(fupacts) )
+m15.1a <- stan_glm(fupacts ~ couples + women_alone, family=poisson(link='log'), data=risky_a, refresh = 0)
+print(m15.1a)
+## Check if there is any evidence of overdispersion
+pp_check(m15.1a)
+# residual plot
+yhat=predict(m15.1a, type="response")
+plot(yhat, resid(m15.1a), xlab="predicted value", ylab="residual",
+main="Residuals vs.\ predicted values", mgp=c(1.5,.5,0), pch=20, yaxt="n")
+axis(2, seq(-40,40,20), mgp=c(1.5,.5,0))
+abline(0, 0, col="gray", lwd=.5)
+risky_b <- risky_a %>%
+mutate(bupacts = as.factor(bupacts),
+sex = as.factor(sex),
+bs_hiv = as.factor(bs_hiv))
+m15.1b <- stan_glm(fupacts ~ bupacts + couples + women_alone + sex + bs_hiv, family=poisson(link='log'), data=risky_a, refresh = 0)
+print(m15.1b)
+pp_check(m15.1b)
+# residual plot
+yhat=predict(m15.1b, type="response")
+plot(yhat, resid(m15.1b), xlab="predicted value", ylab="residual",
+main="Residuals vs.\ predicted values", mgp=c(1.5,.5,0), pch=20, yaxt="n")
+axis(2, seq(-40,40,20), mgp=c(1.5,.5,0))
+abline(0, 0, col="gray", lwd=.5)
+##quasipossion??
+library(rstanarm)
+m15.1c_qp <- stan_glm(fupacts ~ bupacts + couples + women_alone + sex + bs_hiv,
+family = neg_binomial_2(link = "log"),
+data = risky_a,
+refresh = 0)
+m15.1c_qp.post = posterior_predict(m15.1c_qp,draws=1000)
+# Get the density estimate of the observed data
+dens_observed <- density(risky_a$fupacts)
+# Plot the density of observed data
+plot(dens_observed, main = "Observed vs. Replicated Data", xlab = "Value", ylab = "Density",
+col = "blue", lwd = 2, ylim = c(0, max(dens_observed$y) * 1.2))  # Adjust ylim for visibility
+# Overlay density estimates of replicated data
+for (i in 1:100) {
+dens_replicated <- density(m15.1c_qp.post[i,])
+lines(dens_replicated$x, dens_replicated$y, col = rgb(0.5, 0.5, 0.5, 0.5), lwd = 1)
+}
+# Legend
+legend("topright", legend = c("Observed", "Replicated"), fill = c("blue", rgb(0.5, 0.5, 0.5, 0.5)))
+coef(m15.1c_qp)
+sum(risky$fupacts==0)
+N <- 100
+height = rnorm(N,72,3)
+p = 0.4 + 0.1*(height - 72)/3
+n = round(runif(N,10,30),0)
+y = rbinom(N,n,p)
+data = data.frame(n,y,height)
+fit_1a = stan_glm(cbind(y,n-y) ~ height, family=binomial(link="logit"), data=data,refresh=0)
+print(fit_1a)
+library(bayesplot)
+fit_1acheck = posterior_predict(fit_1a)
+ppc_dens_overlay(y,fit_1acheck)
+b = (logit(0.4) - logit(0.3))/3
+a = logit(0.4)
+p = invlogit(a+b*(height-72))
+n = round(runif(N,10,30),0)
+y = rbinom(N,n,p)
+data = data.frame(n,y,height)
+fit_1b = stan_glm(cbind(y,n-y) ~ height, family=binomial(link="logit"), data=data,refresh=0)
+print(fit_1b)
+fit_1bcheck = posterior_predict(fit_1a)
+ppc_dens_overlay(y,fit_1bcheck)
+# install.packages("VGAM")
+library(VGAM)
+library(haven)
+lalonde <- read_dta("~/Documents/Documents - Jenny Yi’s MacBook Air/mssp/ma678/ROS-Examples-master/Lalonde/NSW_dw_obs.dta")
+lalonde
+m15.7 <- vglm(log(re78+1) ~ treat + re75, tobit(Lower = 0, Upper=10,type.fitted="censored"), data=lalonde, maxit = 500)
+summary(m15.7)
+plot(predict(m15.7, type = "response",newdata=lalonde)[,1],log(lalonde$re78+1), alpha =0.5);
+abline(0,1)
+# install.packages("MCMCpack")
+library("MCMCpack")
+set.seed(123)
+bayes.tobit <- MCMCtobit(log(re78+1) ~ treat + re75, below = 0,
+mcmc = 30000, verbose = 1000, data=lalonde)
+summary(bayes.tobit)
+library(readr)
+congress <- read_csv("~/Documents/Documents - Jenny Yi’s MacBook Air/mssp/ma678/ROS-Examples-master/Congress/data/congress.csv")
+congress_a <- data.frame(vote=congress$v88_adj,pastvote=congress$v86_adj,inc=congress$inc88)
+m15.8a = stan_glm(vote ~ pastvote + inc, data=congress_a,refresh=0)
+print(m15.8a,digits=2)
+post = posterior_predict(m15.8a)
+ppc_dens_overlay(post[1:100,],y=congress_a$vote)
+# install.packages("brms")
+library(brms)
+tfit = brm(vote ~ pastvote + inc,data=congress_a,family="student",chains=2,iter=2000,refresh=0)
+print(tfit)
+postt = posterior_predict(tfit)
+ppc_dens_overlay(congress_a$vote,postt[1:50,])
+congress_a$votebin = ifelse(congress_a$vote>0.5,1,0)
+log = stan_glm(votebin ~ pastvote + inc, data=congress_a,family=binomial(link="logit"),refresh=0)
+postlog = posterior_predict(log,draws=1009)
+ppc_dens_overlay(postlog[1:100,], y=congress_a$votebin)
+rob = glm(votebin ~ pastvote + inc, data=congress_a,family=binomial(link=gosset(2)))
+ggplot(congress_a) +
+aes(x=pastvote) +
+geom_point(aes(y=votebin),color="pink") +
+geom_point(aes(y=invlogit(predict(rob))),color="skyblue")
+fit15a = stan_glm(fupacts ~ bs_hiv, data=risky_a, refresh=0, family=poisson(link="log"))
+sim = posterior_predict(fit15a,draws=1000)
+ppc_dens_overlay(risky_a$fupacts,sim[1:100,])
+check0 = function(sims) { return(mean(sims==0))
+}
+check10 = function(sims) { return(mean(sims>=10))
+}
+store0 = apply(sim, 2, check0)
+store10 = apply(sim,2,check10)
+ggplot() + geom_histogram(aes(x=store0)) + geom_vline(xintercept=mean(risky_a$fupacts==0)) + xlim(c(-0.05,1))
+ggplot() + geom_histogram(aes(x=store10)) + geom_vline(xintercept=mean(risky_a$fupacts>=10)) + xlim(c(0,1))
+fit15b = stan_glm(fupacts ~ bs_hiv, data=risky_a, refresh=0, family=neg_binomial_2(link="log"))
+sim = posterior_predict(fit15b,draws=1000)
+ppc_dens_overlay(risky_a$fupacts,sim[1:100,])
+store0b = check0(sim)
+store10b = check10(sim)
+ggplot() +
+geom_histogram(aes(x=store0b)) +
+geom_vline(xintercept=check0(risky_a$fupacts_R)) +
+xlim(c(0,1))
+ggplot() +
+geom_histogram(aes(x=store10b)) +
+geom_vline(xintercept=check10(risky_a$fupacts_R)) +
+xlim(c(0,1))
+mc = stan_glm(fupacts ~ bs_hiv + bupacts, data=risky_a, refresh=0, family=neg_binomial_2(link="log"))
+sim = posterior_predict(mc,draws=1000)
+ppc_dens_overlay(risky_a$fupacts,sim[1:100,])
+store0c = check0(sim)
+store10c = check10(sim)
+ggplot() +
+geom_histogram(aes(x=store0c)) +
+geom_vline(xintercept=check0(risky_a$fupacts)) +
+xlim(c(0,1))
+ggplot() +
+geom_histogram(aes(x=store10c)) +
+geom_vline(xintercept=check10(risky_a$fupacts)) +
+xlim(c(0,1))
+lalonde$bin78 = ifelse(lalonde$re78==0,0,1)
+lalog = stan_glm(bin78 ~ treat + re75, data=lalonde, family=binomial(link="logit"),refresh =0)
+lalin = stan_glm(log(re78) ~ treat + re75, data=lalonde[lalonde$bin78==1,], refresh=0)
+sim = posterior_predict(lalog,draws=1000)
+sim2 = posterior_predict(lalin,draws=1000)
+pp_check(lalog)
+pp_check(lalin)
+rob = glm(votebin ~ pastvote + inc, data=congress_a,family=binomial(link=gosset(2)))
+ggplot(congress_a) +
+aes(x=pastvote) +
+geom_point(aes(y=votebin),color="pink") +
+geom_point(aes(y=invlogit(predict(rob))),color="skyblue")
+rob = glm(votebin ~ pastvote + inc, data=congress_a,family=binomial()
+ggplot(congress_a) +
+rob = glm(votebin ~ pastvote + inc, data=congress_a,family=binomial())
+ggplot(congress_a) +
+aes(x=pastvote) +
+geom_point(aes(y=votebin),color="pink") +
+geom_point(aes(y=invlogit(predict(rob))),color="skyblue")
+rob = glm(votebin ~ pastvote + inc, data=congress_a,family=binomial(link=gosset(2)))
+ggplot(congress_a) +
+aes(x=pastvote) +
+geom_point(aes(y=votebin),color="pink") +
+geom_point(aes(y=invlogit(predict(rob))),color="skyblue")
+rob = glm(votebin ~ pastvote + inc, data=congress_a,family=binomial())
+ggplot(congress_a) +
+aes(x=pastvote) +
+geom_point(aes(y=votebin),color="pink") +
+geom_point(aes(y=invlogit(predict(rob))),color="skyblue")
+rob = glm(votebin ~ pastvote + inc, data=congress_a,family=binomial(link=gosset(2)))
+ggplot(congress_a) +
+aes(x=pastvote) +
+geom_point(aes(y=votebin),color="pink") +
+geom_point(aes(y=invlogit(predict(rob))),color="skyblue")
+rob = glm(votebin ~ pastvote + inc, data=congress_a,family=binomial())
+ggplot(congress_a) +
+aes(x=pastvote) +
+geom_point(aes(y=votebin),color="pink") +
+geom_point(aes(y=invlogit(predict(rob))),color="skyblue")
+library(ggplot2)
+rob = glm(votebin ~ pastvote + inc, data=congress_a,family=binomial())
+ggplot(congress_a) +
+aes(x=pastvote) +
+geom_point(aes(y=votebin),color="pink") +
+geom_point(aes(y=invlogit(predict(rob))),color="skyblue")
+install.packages("googlesheets4")
+gs4_auth()
+library(googlesheets4)
+gs4_auth()
+library(tidyverse)
+print(getwd())
+data <- read_csv(here::here("dataset/loan_refusal_clean.csv"))
+load(here::here("dataset/loan_refusal.RData"))
+print(ls())
+table(cleansed_df1$ORI)
+source(
+"scripts/load_and_clean_data.R",
+echo = TRUE # Use echo=FALSE or omit it to avoid code output
+)
+knitr::opts_chunk$set(echo = TRUE)
+options(repos = c(CRAN = "https://cran.rstudio.com"))
+install.packages("googlesheet4")
+#install.packages("googledrive")
+#install.packages("gsheet")
+library(tidyverse)
+library(googlesheets4)
+library(gsheet)
+convert_na_to_zero <- function(data){
+result <- data %>% mutate_all(~ifelse(is.na(.), 0, .))
+return(result)
+}
+civilian_complaints_id<- "https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit#gid=121254631"
+civilian_complaints<-read_sheet(civilian_complaints_id,
+na=c(" ","N/A","NA"))
+knitr::opts_chunk$set(echo = TRUE)
+options(repos = c(CRAN = "https://cran.rstudio.com"))
+install.packages("googlesheet4")
+install.packages("googledrive")
+install.packages("gsheet")
+library(tidyverse)
+library(googlesheets4)
+library(gsheet)
+source(
+"scripts/load_and_clean_data.R",
+echo = TRUE # Use echo=FALSE or omit it to avoid code output
+)
+knitr::opts_chunk$set(echo = TRUE)
+options(repos = c(CRAN = "https://cran.rstudio.com"))
+install.packages("googlesheet4")
+install.packages("googledrive")
+install.packages("gsheet")
+library(tidyverse)
+library(googlesheets4)
+library(gsheet)
+convert_na_to_zero <- function(data){
+result <- data %>% mutate_all(~ifelse(is.na(.), 0, .))
+return(result)
+}
+civilian_complaints_id<- "https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit#gid=121254631"
+civilian_complaints<-read_sheet(civilian_complaints_id,
+na=c(" ","N/A","NA"))
+install.packages("gsheet")
+knitr::opts_chunk$set(echo = TRUE)
+#Cleanse the data
+head(civilian_complaints)
+civilian_complaints_id<- "https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit#gid=121254631"
+civilian_complaints<-read_sheet(civilian_complaints_id,
+na=c(" ","N/A","NA"))
+library(tidyverse)
+library(googlesheets4)
+library(gsheet)
+convert_na_to_zero <- function(data){
+result <- data %>% mutate_all(~ifelse(is.na(.), 0, .))
+return(result)
+}
+civilian_complaints_id<- "https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit#gid=121254631"
+civilian_complaints<-read_sheet(civilian_complaints_id,
+na=c(" ","N/A","NA"))
+source(
+"scripts/load_and_clean_data.R",
+echo = TRUE # Use echo=FALSE or omit it to avoid code output
+)
+knitr::opts_chunk$set(echo = TRUE)
+options(repos = c(CRAN = "https://cran.rstudio.com"))
+install.packages("googlesheet4")
+install.packages("googledrive")
+install.packages("gsheet")
+library(tidyverse)
+library(googlesheets4)
+library(gsheet)
+library(googledrive)
+convert_na_to_zero <- function(data){
+result <- data %>% mutate_all(~ifelse(is.na(.), 0, .))
+return(result)
+}
+civilian_complaints_id<- "https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit#gid=121254631"
+civilian_complaints<-read_sheet(civilian_complaints_id,
+na=c(" ","N/A","NA"))
+source(
+"scripts/load_and_clean_data.R",
+echo = TRUE # Use echo=FALSE or omit it to avoid code output
+)
+knitr::opts_chunk$set(echo = TRUE)
+options(repos = c(CRAN = "https://cran.rstudio.com"))
+install.packages("googlesheet4")
+install.packages("googledrive")
+install.packages("gsheet")
+library(tidyverse)
+library(googlesheets4)
+library(gsheet)
+library(googledrive)
+convert_na_to_zero <- function(data){
+result <- data %>% mutate_all(~ifelse(is.na(.), 0, .))
+return(result)
+}
+civilian_complaints_id<- "https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit#gid=121254631"
+civilian_complaints<-read_sheet(civilian_complaints_id,
+na=c(" ","N/A","NA"))
+install.packages("gsheet")
+source(
+"scripts/load_and_clean_data.R",
+echo = TRUE # Use echo=FALSE or omit it to avoid code output
+)
+knitr::opts_chunk$set(echo = TRUE)
+options(repos = c(CRAN = "https://cran.rstudio.com"))
+#install.packages("googlesheet4")
+#install.packages("googledrive")
+#install.packages("gsheet")
+library(tidyverse)
+library(googlesheets4)
+library(gsheet)
+library(googledrive)
+convert_na_to_zero <- function(data){
+result <- data %>% mutate_all(~ifelse(is.na(.), 0, .))
+return(result)
+}
+civilian_complaints_id<- "https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit#gid=121254631"
+civilian_complaints<-read_sheet(civilian_complaints_id,
+na=c(" ","N/A","NA"))
+source(
+"scripts/load_and_clean_data.R",
+echo = TRUE # Use echo=FALSE or omit it to avoid code output
+)
+knitr::opts_chunk$set(echo = TRUE)
+options(repos = c(CRAN = "https://cran.rstudio.com"))
+#install.packages("googlesheet4")
+#install.packages("googledrive")
+#install.packages("gsheet")
+library(tidyverse)
+library(googlesheets4)
+library(gsheet)
+library(googledrive)
+convert_na_to_zero <- function(data){
+result <- data %>% mutate_all(~ifelse(is.na(.), 0, .))
+return(result)
+}
+civilian_complaints_id<- "https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit#gid=121254631"
+civilian_complaints<-read_sheet(civilian_complaints_id,
+na=c(" ","N/A","NA"))
+table(cleansed_df1$ORI)
+source(
+"scripts/load_and_clean_data.R",
+echo = TRUE # Use echo=FALSE or omit it to avoid code output
+)
+knitr::opts_chunk$set(echo = TRUE)
+options(repos = c(CRAN = "https://cran.rstudio.com"))
+#install.packages("googlesheet4")
+#install.packages("googledrive")
+#install.packages("gsheet")
+library(tidyverse)
+library(googlesheets4)
+library(gsheet)
+library(googledrive)
+convert_na_to_zero <- function(data){
+result <- data %>% mutate_all(~ifelse(is.na(.), 0, .))
+return(result)
+}
+civilian_complaints_id<- "https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit#gid=121254631"
+civilian_complaints<-read_sheet(civilian_complaints_id,
+na=c(" ","N/A","NA"))

@@ -1,0 +1,40 @@
+---
+title: "First Blog"
+author: "Team 12 "
+date: "2023-10-23"
+date-modified: "2023-10-23"
+draft: FALSE
+---
+
+
+### Make sure to provide a link to the original data source. (Provide a link to the data description, not the actual data file.)
+https://cde.ucr.cjis.gov
+
+https://drive.google.com/file/d/1ovHl7CIY3xYjSbUGDGQINTUPVYtXJ7Tz/view?usp=sharing
+
+https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit?usp=sharing
+
+https://docs.google.com/spreadsheets/d/19URywaaBdt840FlRp8srrVtAy4lKMlYF/edit?usp=sharing&ouid=114740779141954747870&rtpof=true&sd=true
+
+### Give any details you can in regards to the number of rows and number of columns for your data.
+The number of columns shows every police and county sheriff department across the US that are available to the data. The number of rows indicate the amount of expenditures the police and sheriff departments have spent per resident with range of 0$ to 1100$.
+
+### Describe why and how the data was originally collected.
+
+The Police Scorecard database consolidates information from various authoritative databases both on the federal and state levels, such as the FBI's Uniform Crime Report (UCR), the Bureau of Justice Statistics' Annual Jail Survey, the US Census Bureau's Assessment of State and Local Government Finances, and the California Department of Justice's OpenJustice database. This project is designed to help communities, researchers, police leaders and policy-makers take data-informed action to reduce police use of force, increase accountability and reimagine public safety in their jurisdictions. In instances where specific agencies did not provide data to these recognized platforms, they looked towards local publications and news articles as alternative sources. 
+Furthermore, details regarding fatalities resulting from police actions were sourced from the Mapping Police Violence database. This database records every instance where police actions directly led to an individual's demise, be it through firearms or other means. In addition to this, information about non-fatal instances of police using force and complaints about police misconduct was gathered directly from the respective police departments. This was done through accessing public records, scrutinizing annual reports, and navigating through the open data websites of these departments.
+
+### Are you able to load/clean the data?
+
+These three documents are presented in the form of Google Docs and CSV files. Consequently, we downloaded the dataset from Google Docs and saved it in CSV format. We then imported the files into R Studio. Following the import, we conducted data cleaning by means of outlier removal and standardization of data formats.
+
+### What are the main questions you hope to address?
+
+Does the increase in police funding have a decreased effect in settlement payment and reducing the number of internal affair complaints?
+How are civilian complaints, use of force, discrimination, and crime rate by race correlated and influence each other?
+
+### What challenges do you foresee?
+
+:I believe that there might be some challenges that will arise when working on the final project, encompassing various aspects such as collaboration and dealing with technical skills. Regarding teamwork, I foresee potential challenges where team members may have different viewpoints on aspects like which facets of the dataset to focus on and what type of analysis to conduct. Additionally, we will likely need to address time management and communication issues. In terms of the technical aspects, the dataset we have appears to contain a significant amount of data, necessitating thorough data cleaning and organization. We will surely need to spend enough time on understanding and refining our skills for handling this data effectively.
+
+

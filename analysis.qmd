@@ -17,10 +17,14 @@ You'll also reflect on next steps and further analysis.
 
 ```{r}
 library(tidyverse)
-print(getwd())
-data <- read_csv(here::here("dataset/loan_refusal_clean.csv"))
-load(here::here("dataset/loan_refusal.RData"))
-print(ls())
+library(googlesheets4)
+library(gsheet)
+library(googledrive)
+library(readr)
+cleansed_df1 = read_csv(file='./data/cleansed_df1.csv', show_col_types = FALSE)
+use_for_force_original = read_csv(file='./data/use_for_force_original.csv',show_col_types = FALSE)
+use_for_force = read_csv(file='./data/use_for_force.csv',show_col_types = FALSE)
+ori_lookup = read_csv(file='./data/ori_lookup.csv',show_col_types = FALSE)
 ```
 
 
@@ -28,6 +32,7 @@ print(ls())
 ## EDA and Modelling 
 
 ```{r}
+
 table(cleansed_df1$ORI)
 filtered_cleansed_df1 <- cleansed_df1 %>%
   group_by(ORI) %>%
@@ -104,6 +109,32 @@ qqnorm(res)
 plot(density(res))
 
 summary(res)
+```
+
+```{r}
+library(gplots)
+library(corrplot)
+colnames(merged_data)
+#adjust for population
+merged_data$Total_Less_lethal_force_2020_porp <- merged_data$Total_Less_lethal_force_2020/merged_data$Population
+merged_data$civilian_complaints_sustained_2020_porp <- merged_data$civilian_complaints_sustained_2020/merged_data$Population
+merged_data$discrimination_complaints_sustained_2020_porp <- merged_data$discrimination_complaints_sustained_2020/merged_data$Population
+# standardlize
+columns_to_standardize <- c(
+  "Total_Less_lethal_force_2020_porp",
+  "civilian_complaints_sustained_2020_porp",
+  "discrimination_complaints_sustained_2020_porp"
+)
+data_to_standardize <- merged_data[columns_to_standardize]
+scaled_data <- scale(data_to_standardize)
+merged_data[columns_to_standardize] <- scaled_data
+print(merged_data)
+#heatmap
+selected_columns <- c("Total_Less_lethal_force_2020","Population","civilian_complaints_sustained_2020","discrimination_complaints_sustained_2020")
+cor_matrix <- cor(merged_data[selected_columns], use = "complete.obs")
+corrplot(cor_matrix, method = "color", type = "full", order = "hclust", 
+         tl.col = "black", tl.srt = 45, 
+         diag = TRUE) 
 ```
 ## Note on Attribution
 
