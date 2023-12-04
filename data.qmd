@@ -106,9 +106,9 @@ library(readr)
 ## The dataset is Fact checking.xlsx, including 12 data sheets
 ### 1.1
 ```{r}
- civilian_complaints_id<- "https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit#gid=121254631"
- civilian_complaints<-read_sheet(civilian_complaints_id,
-                                    na=c(" ","N/A","NA"))
+# civilian_complaints_id<- "https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit#gid=121254631"
+# civilian_complaints<-read_sheet(civilian_complaints_id,
+#                                    na=c(" ","N/A","NA"))
 ```
 
 ```{r}
