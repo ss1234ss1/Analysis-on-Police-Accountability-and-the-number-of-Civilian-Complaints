@@ -40,3 +40,4 @@ Remove records with missing values, or filling with placeholder values N/A. Dele
 We cleaned 2 datasets: “civilian complaints” and “use of force”. In our cleaned civilian complaints and use of force datasets, we replaced previously missing values with “0”. We then created a box plot visualization representing civilian complaints sustained by the state. From this box plot, we can infer that California and New York’s police departments have unusually high numbers of reported complaints (outliers) compared to the overall distribution. Based on our use of force dataset, New York has an outlier. Not only does it have an elevated number of complaints like California, but our "use of force" dataset also reveals an exceptional statistic. The New York Police Department has recorded using "less lethal force" 1,721 times, a figure that starkly differentiates it from other departments.
 
 
+
