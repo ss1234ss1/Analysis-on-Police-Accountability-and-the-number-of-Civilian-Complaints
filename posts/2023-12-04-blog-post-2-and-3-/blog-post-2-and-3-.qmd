@@ -1,0 +1,65 @@
+---
+title: "Blog Post 2 and 3 "
+author: "Team 12 "
+date: "2023-12-04"
+date-modified: "2023-12-04"
+draft: FALSE
+---
+### EDA:
+
+We cleaned 2 datasets: “civilian complaints” and “use of force”. In our cleaned civilian complaints and use of force datasets, we replaced previously missing values with “0”. We then created a box plot visualization representing civilian complaints sustained by the state. From this box plot, we can infer that California and New York’s police departments have unusually high numbers of reported complaints (outliers) compared to the overall distribution. Based on our use of force dataset, New York has an outlier. Not only does it have an elevated number of complaints like California, but our "use of force" dataset also reveals an exceptional statistic. The New York Police Department has recorded using "less lethal force" 1,721 times, a figure that starkly differentiates it from other departments.
+
+### Data Cleaning Steps:
+1. Load the Data Sheets:
+Begin by loading the two data sheets into R
+
+2. Preliminary Inspection:
+
+Check the first few rows of each sheet to understand the structure and content.Identify missing values, anomalies, or any inconsistencies in column names and data types.
+
+3. Saving only necessary columns:
+
+In the use of force dataset, keep:
+  1. 2013-2022 Total Less Lethal Force column 
+  2. ORI 
+
+In the Civilian Complaints Dataset:
+  1.Police Department 
+  2.State
+  3.ORI
+  4.Civilian_complaints_reported
+  5.Civilian_complaints_sustained 
+
+4. Merging the Two Data Sheets:
+
+Using the ORI identifier, to append use of force dataset to Civilian Complaints Dataset
+
+5. Handle missing values:								
+
+Remove records with missing values, or filling with placeholder values N/A. Delete all rows without matching ORI 
+
+6. Save and Document:
+
+Save the cleaned and merged dataset. record all cleaning steps, decisions made, and any assumptions.
+
+
+
+## Data for Equity:
+Based on the principles for advancing equitable data practice outlined in the Urban Institute's document, we can discuss the relevance of these principles to our dataset on U.S. law enforcement, crime rates, racial demographics of criminals, and police expenditure.
+
+## Beneficence:
+We ensure that our data collection and analysis maximize benefits and avoid harm. In analyzing crime rates and racial demographics, we present the data responsibly to avoid perpetuating stereotypes or stigmatizing racial groups. We contextualize the data with socioeconomic factors, law enforcement practices, and historical patterns that influence crime rates and police expenditure, aiming to provide a comprehensive understanding that can inform equitable policy-making.
+
+## Respect for Persons:
+We uphold the principle of respect for persons by ensuring our data collection process is transparent and consensual. Individuals and communities involved in our data are informed about how their information will be used and are given the autonomy to opt out. We protect the privacy of individuals, especially when handling sensitive information such as criminal records, ensuring that our data practices adhere to ethical standards of confidentiality and respect for individual autonomy.
+
+## Justice:
+We apply the principle of justice by ensuring fair representation across all racial groups and communities in our dataset. Our analysis of police expenditure is conducted with an awareness of the needs and priorities of all communities, including those historically underserved. We actively seek to understand and address any biases in our data or analysis process to prevent unequal treatment or representation.
+
+## Transparency:
+Transparency is a cornerstone of our approach to data practice. We are open about the methodologies used in collecting and analyzing our data, the sources from which it is derived, and any limitations inherent in our dataset. We disclose the assumptions made during our analysis and clarify the conclusions that can be drawn from our data, ensuring that our findings are presented with integrity and clarity.
+
+## Limitations and Potential for Abuse/Misuse:
+We acknowledge the limitations of our analysis, such as potential underreporting in crime rates or incomplete accounting in police expenditure data. These limitations are clearly communicated to prevent the misuse of our findings. We are aware of the potential for abuse if our data is used to support policies that disproportionately affect certain racial groups or justify excessive police expenditure. Therefore, we handle our data with the utmost care, aiming to prevent its misuse and contribute to informed and equitable decision-making.
+
+
