@@ -1,9 +1,13 @@
 ---
 title: "Blog Post 5"
-author: ""
+author: "Team 12"
 date: "2023-12-04"
 date-modified: "2023-12-04"
 draft: FALSE
 ---
 
-The dataset we combined is an overview of the civilian complaints over years and use of force of police officers. We use the dplyr library actively, filtering out N/A values, using Janitor name to have a cleansed name, selecting columns we need, dropping columns we don’t need for our analysis. There was a difficulty combining data, which is that I did not manage to figure out  what I was supposed to combine the data sets. To figure it out, I needed to thoroughly go over the data sets and see what it would look like if I used some sort of functions and stuff like that, especially join function and pivot function being the biggest challenge to figure out how they would work for the data sets. The initial finding that we found is a slight positive correlation between the complaints and the use of force. When doing linear regression, There is a positive coefficient, so we can see there is a positive correlation between them.
+
+### How we combine different datasets:
+
+The dataset we combined is an overview of the civilian complaints over years and use of force of police officers. We use the dplyr library actively, filtering out N/A values, using Janitor name to have cleansed name, selecting columns we need, dropping columns we don’t need for our analysis. There was a difficulty combining data, which is that I did not manage to figure out  what I was supposed to combined the data sets. To figure it out, I needed to thoroughly go over the data sets and see what it would look like if I use some sort of functions and stuff like that, especially join function and pivot function being the biggest challenge to figure out how they would work for the data sets. The initial finding that we found is a slight positive correlation between the complaints and the use of force. When doing linear regression, There is a positive coefficient, so we can see it there is a positive correlation between them.
+

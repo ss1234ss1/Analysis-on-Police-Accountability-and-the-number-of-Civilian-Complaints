@@ -1,0 +1,16 @@
+---
+title: "Blog post 6 "
+author: "Team 12 "
+date: "2023-12-04"
+date-modified: "2023-12-04"
+draft: FALSE
+---
+
+### How are you continuing your exploratory data analysis? Make sure you’ve done a thorough exploration for your project. Lots of ideas will be dead ends but keep looking and think about attaching more data.
+ We will use Heatmap (p&per cap) and box plot to represent 6 key cities with most updated reporting (pre George Flloyd to post George Flloyd), look at civilian complaints , divide each time period per year 
+Map on pre capital use of force and civilian complaints 
+
+### What is your tentative thesis? Note that a thesis is not a hypothesis or a question. It should in some ways answer a question. (Eg. rather than, "What are the patterns of housing prices in Boston?", something like, "Housing prices in Boston are rising rapidly, especially near T stations and along the water.") The rest of the project should work to support that thesis. That doesn’t mean there won’t be any caveats or uncertainty, but you should try to accurately  provide details that provide evidence for your thesis.
+
+Our Thesis would be: Police who use less lethal force receive fewer civilian complaints
+
