@@ -17,12 +17,226 @@ You'll also reflect on next steps and further analysis.
 
 ```{r}
 library(tidyverse)
-print(getwd())
-data <- read_csv(here::here("dataset/loan_refusal_clean.csv"))
-load(here::here("dataset/loan_refusal.RData"))
-print(ls())
+library(googlesheets4)
+library(gsheet)
+library(googledrive)
+library(readr)
+cleansed_df1 = read_csv(file='./data/cleansed_df1.csv', show_col_types = FALSE)
+use_for_force_original = read_csv(file='./data/use_for_force_original.csv',show_col_types = FALSE)
+use_for_force = read_csv(file='./data/use_for_force.csv',show_col_types = FALSE)
+ori_lookup = read_csv(file='./data/ori_lookup.csv',show_col_types = FALSE)
+civilian_complaints= read_csv(file='./data/civilian_complaints.csv', show_col_types = FALSE)
 ```
 
+
+
+## EDA and Modelling 
+
+```{r}
+
+table(cleansed_df1$ORI)
+filtered_cleansed_df1 <- cleansed_df1 %>%
+  group_by(ORI) %>%
+  filter(n() == 1)
+print(filtered_cleansed_df1)
+
+filtered_use_for_force <- use_for_force %>%
+  group_by(ORI) %>%
+  filter(n() == 1)
+print(filtered_use_for_force)
+```
+
+```{r}
+colnames(filtered_use_for_force)[colnames(filtered_use_for_force) == "Police Department"] <- "police_department"
+
+merged_data <- merge(filtered_use_for_force,filtered_cleansed_df1, by = "ORI", all = TRUE)
+merged_data <- subset(merged_data, select = -police_department.x)
+print(merged_data)
+```
+## Heatmap
+```{r}
+library(gplots)
+library(corrplot)
+colnames(merged_data)
+selected_columns <- c("Total_Less_lethal_force_2020","Population","civilian_complaints_sustained_2020","discrimination_complaints_sustained_2020")
+cor_matrix <- cor(merged_data[selected_columns], use = "complete.obs")
+corrplot(cor_matrix, method = "color", type = "full", order = "hclust", 
+         tl.col = "black", tl.srt = 45, 
+         diag = TRUE) 
+```
+```{r}
+# Assuming you've already installed and loaded necessary packages and your data is loaded
+
+# Running a simple linear regression
+model <- lm(civilian_complaints_sustained_2020/Population ~ Total_Less_lethal_force_2020/Population, data = merged_data)
+
+# Viewing the summary of the model
+summary(model)
+
+# Making predictions
+predictions <- predict(model, newdata = merged_data)
+
+# Plotting (with ggplot2)
+library(ggplot2)
+ggplot(merged_data, aes(x = 1000*Total_Less_lethal_force_2020/Population, y = 1000*civilian_complaints_sustained_2020/Population)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+```{r}
+#Bar plot
+
+library(dplyr)
+library(ggplot2)
+
+ key_cities <- c("New York", "Los Angeles", "Detroit")
+ filtered_data <- civilian_complaints %>%
+  filter(`Police Department` %in% key_cities)
+
+ top_departments_2017 <- filtered_data %>%
+  group_by(`Police Department`) %>%
+  summarise(Total_Complaints_2017 = sum(civilian_complaints_reported_2017, na.rm = TRUE)) %>%
+  arrange(desc(Total_Complaints_2017)) %>%
+  slice_head(n = 7)  
+
+top_departments_2021 <- filtered_data %>%
+  group_by(`Police Department`) %>%
+  summarise(Total_Complaints_2021 = sum(civilian_complaints_reported_2021, na.rm = TRUE)) %>%
+  arrange(desc(Total_Complaints_2021)) %>%
+  slice_head(n = 7)  
+
+top_departments_2017$`Police Department` <- trimws(top_departments_2017$`Police Department`)
+civilian_complaints$`Police Department` <- trimws(civilian_complaints$`Police Department`)
+
+# Merge population data into top_departments_2017
+top_departments_2017 <- top_departments_2017 %>%
+  left_join(civilian_complaints %>% select(`Police Department`, population), by = "Police Department")
+
+top_departments_2017 <- top_departments_2017 %>%
+  mutate(Complaints_Per_Capita_2017 = (Total_Complaints_2017 / population) * 100000)
+
+# For 2017
+ggplot(top_departments_2017, aes(x = `Police Department`, y = Complaints_Per_Capita_2017)) +
+  geom_bar(stat = "identity", fill = "green") +
+  labs(title = "Civilian Complaints Per Capita in 2017",
+       x = "City",
+       y = "Complaints Per 100,000 People") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+
+top_departments_2021$`Police Department` <- trimws(top_departments_2021$`Police Department`)
+civilian_complaints$`Police Department` <- trimws(civilian_complaints$`Police Department`)
+
+# Merge population data into top_departments_2021
+top_departments_2021 <- top_departments_2021 %>%
+  left_join(civilian_complaints %>% select(`Police Department`, population), by = "Police Department")
+
+top_departments_2021 <- top_departments_2021 %>%
+  mutate(Complaints_Per_Capita_2021 = (Total_Complaints_2021 / population) * 100000)
+
+
+top_departments_2021 <- top_departments_2021 %>%
+  mutate(Complaints_Per_Capita_2017 = (Total_Complaints_2021 / population) * 100000)
+
+# For 2021
+ggplot(top_departments_2021, aes(x = `Police Department`, y = Complaints_Per_Capita_2021)) +
+  geom_bar(stat = "identity", fill = "red") +
+  labs(title = "Civilian Complaints Per Capita in 2021",
+       x = "City",
+       y = "Complaints Per 100,000 People") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+
+# Reshape the 2017 data
+data_2017 <- top_departments_2017 %>%
+  select(`Police Department`, Complaints_Per_Capita = Complaints_Per_Capita_2017) %>%
+  mutate(Year = "2017")
+
+# Reshape the 2021 data
+data_2021 <- top_departments_2021 %>%
+  select(`Police Department`, Complaints_Per_Capita = Complaints_Per_Capita_2021) %>%
+  mutate(Year = "2021")
+
+# Combine the data
+combined_data <- rbind(data_2017, data_2021)
+
+# List of selected cities
+selected_cities <- c("New York", "Los Angeles", "Detroit")
+
+# Filter combined data for selected cities
+filtered_data <- combined_data %>%
+  filter(`Police Department` %in% selected_cities)
+
+ggplot(filtered_data, aes(x = `Police Department`, y = Complaints_Per_Capita, fill = Year)) +
+  geom_bar(stat = "identity", position = "stack") +
+  scale_fill_manual(values = c("2017" = "green", "2021" = "red")) +
+  labs(title = "3 Major Cities with Civilian Complaints Reported per Capita in 2017 vs. 2021",
+       x = "City",
+       y = "Complaints Per 100,000 People") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+```
+
+```{r}
+#install.packages("rstanarm")
+library(rstanarm)
+
+null_model_poisson <- stan_glm(Total_Less_lethal_force_2020 ~ 1, data = merged_data, family = poisson())
+
+summary(null_model_poisson)
+```
+
+
+```{r step 3 Residual Plots}
+merged_data <- subset(merged_data, !is.na(Total_Less_lethal_force_2020) & !is.na(civilian_complaints_sustained_2020))
+
+#merged_data<-merged_data|>
+#  filter(is.na(Total_Less_lethal_force_2020)==FALSE & is.na(civilian_complaints_sustained_2020)==FALSE)
+merged_data
+
+regression_model<-lm(civilian_complaints_sustained_2020~Total_Less_lethal_force_2020,data=merged_data)
+
+res<-resid(regression_model)
+
+plot(fitted(regression_model),res)|>
+abline(0,0) 
+qqnorm(res)
+plot(density(res))
+
+summary(res)
+```
+
+```{r}
+library(gplots)
+library(corrplot)
+colnames(merged_data)
+#adjust for population
+merged_data$Total_Less_lethal_force_2020_porp <- merged_data$Total_Less_lethal_force_2020/merged_data$Population
+merged_data$civilian_complaints_sustained_2020_porp <- merged_data$civilian_complaints_sustained_2020/merged_data$Population
+merged_data$discrimination_complaints_sustained_2020_porp <- merged_data$discrimination_complaints_sustained_2020/merged_data$Population
+# standardlize
+columns_to_standardize <- c(
+  "Total_Less_lethal_force_2020_porp",
+  "civilian_complaints_sustained_2020_porp",
+  "discrimination_complaints_sustained_2020_porp"
+)
+data_to_standardize <- merged_data[columns_to_standardize]
+scaled_data <- scale(data_to_standardize)
+merged_data[columns_to_standardize] <- scaled_data
+print(merged_data)
+#heatmap
+selected_columns <- c("Total_Less_lethal_force_2020","Population","civilian_complaints_sustained_2020","discrimination_complaints_sustained_2020")
+cor_matrix <- cor(merged_data[selected_columns], use = "complete.obs")
+corrplot(cor_matrix, method = "color", type = "full", order = "hclust", 
+         tl.col = "black", tl.srt = 45, 
+         diag = TRUE) 
+```
 ## Note on Attribution
 
 In general, you should try to provide links to relevant resources, especially those that helped you. You don't have to link to every StackOverflow post you used but if there are explainers on aspects of the data or specific models that you found helpful, try to link to those. Also, try to link to other sources that might support (or refute) your analysis. These can just be regular hyperlinks. You don't need a formal citation.
@@ -41,7 +255,6 @@ If you are directly quoting from a source, please make that clear. You can show 
 
 ## Rubric: On this page
 
-You will
 
 
 * Introduce what motivates your Data Analysis (DA)

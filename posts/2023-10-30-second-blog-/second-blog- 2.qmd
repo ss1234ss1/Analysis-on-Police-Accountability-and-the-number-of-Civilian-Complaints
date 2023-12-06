@@ -1,0 +1,43 @@
+---
+title: "Second blog"
+description:  |
+  Data Loading and Cleaning
+author: "Team 12 "
+date: "2023-10-30"
+date-modified: "2023-10-30"
+draft: FALSE
+---
+
+### Data Cleaning Steps:
+
+### Preliminary Inspection:
+
+Check the first few rows of each sheet to understand the structure and content.Identify missing values, anomalies, or any inconsistencies in column names and data types.
+
+2. Saving only necessary columns:
+
+In the use of force dataset, keep:
+ 2013-2022 Total Less Lethal Force column 
+ORI 
+
+In the Civilian Complaints Dataset:
+Police Department 
+State
+ORI
+Civilian_complaints_reported
+Civilian_complaints_sustained 
+
+4. Merging the Two Data Sheets:
+
+Using the ORI identifier, to append use of force dataset to Civilian Complaints Dataset
+
+5. Handle missing values:								
+
+Remove records with missing values, or filling with placeholder values N/A. Delete all rows without matching ORI 
+
+### EDA/summary
+
+We cleaned 2 datasets: “civilian complaints” and “use of force”. In our cleaned civilian complaints and use of force datasets, we replaced previously missing values with “0”. We then created a box plot visualization representing civilian complaints sustained by the state. From this box plot, we can infer that California and New York’s police departments have unusually high numbers of reported complaints (outliers) compared to the overall distribution. Based on our use of force dataset, New York has an outlier. Not only does it have an elevated number of complaints like California, but our "use of force" dataset also reveals an exceptional statistic. The New York Police Department has recorded using "less lethal force" 1,721 times, a figure that starkly differentiates it from other departments.
+
+
+
