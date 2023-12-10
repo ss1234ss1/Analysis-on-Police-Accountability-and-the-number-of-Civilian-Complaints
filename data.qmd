@@ -78,7 +78,10 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## download the library
 ```{r cars}
+<<<<<<< HEAD
+=======
 options(repos = c(CRAN = "https://cran.rstudio.com"))
+>>>>>>> main
 #install.packages("googlesheet4")
 #install.packages("googledrive")
 #install.packages("gsheet")
