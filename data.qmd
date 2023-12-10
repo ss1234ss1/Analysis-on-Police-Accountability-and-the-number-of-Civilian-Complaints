@@ -78,10 +78,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## download the library
 ```{r cars}
-<<<<<<< HEAD
-=======
 options(repos = c(CRAN = "https://cran.rstudio.com"))
->>>>>>> main
 #install.packages("googlesheet4")
 #install.packages("googledrive")
 #install.packages("gsheet")
@@ -161,6 +158,11 @@ use_for_force = read_csv(file='./data/use_for_force.csv',show_col_types = FALSE)
 view(use_for_force)
 ```
 
+```{r}
+## Read in Police Demo data
+cop_demo = read_csv(file = './data/Officer_Demo_Data.csv',show_col_types = FALSE)
+view(cop_demo)
+```
 
 
 
