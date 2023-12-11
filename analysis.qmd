@@ -236,6 +236,43 @@ corrplot(cor_matrix, method = "color", type = "full", order = "hclust",
          tl.col = "black", tl.srt = 45, 
          diag = TRUE) 
 ```
+
+
+```{r Merged Data Load and transformation} 
+library(tidyverse) 
+merged_df<-read_csv("data//merged_data.csv")
+view(merged_df)
+
+calculate_diversity_metrix <- function(proportions) {
+  -sum(proportions * log(proportions, base = exp(1)), na.rm = TRUE)
+}
+merged_df<-merged_df|>
+  mutate(
+    diversity_metrix=apply(select(merged_df, starts_with("percent_officers")), 1, calculate_diversity_metrix),
+    .after=7
+  )
+```
+
+```{r }
+# Bar chart Diversity Index VS Civilian Complains 2020
+library(ggplot2)
+
+# Assuming merged_data is your data frame
+# Replace "diversity_metrix" with the actual column name from your data frame
+ggplot(data = merged_df, aes(x = diversity_metrix, y = civilian_complaints_reported_2020)) +
+  geom_bar(stat = "identity", fill = "skyblue", color = "black", alpha = 0.7) +
+  labs(title = "Bar chart: Diversity Index VS Civilian Complaints 2020",
+       x = "Diversity Metrics",
+       y = "Civilian Complaints Reported 2020 (Adjusted for Population)") +
+  coord_cartesian(xlim = c(min(merged_df$diversity_metrix), max(merged_df$diversity_metrix)),
+                  ylim = c(0, 5000)) +
+  theme_minimal() +  # Adjust the theme as needed
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Rotate x-axis labels for better readability
+
+
+```
+
+
 ## Note on Attribution
 
 In general, you should try to provide links to relevant resources, especially those that helped you. You don't have to link to every StackOverflow post you used but if there are explainers on aspects of the data or specific models that you found helpful, try to link to those. Also, try to link to other sources that might support (or refute) your analysis. These can just be regular hyperlinks. You don't need a formal citation.
