@@ -65,7 +65,6 @@ corrplot(cor_matrix, method = "color", type = "full", order = "hclust",
          diag = TRUE) 
 ```
 ```{r}
-# Assuming you've already installed and loaded necessary packages and your data is loaded
 
 # Running a simple linear regression
 model <- lm(civilian_complaints_sustained_2020/Population ~ Total_Less_lethal_force_2020/Population, data = merged_data)
