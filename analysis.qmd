@@ -257,21 +257,92 @@ merged_df<-merged_df|>
 # Bar chart Diversity Index VS Civilian Complains 2020
 library(ggplot2)
 
-# Assuming merged_data is your data frame
-# Replace "diversity_metrix" with the actual column name from your data frame
-ggplot(data = merged_df, aes(x = diversity_metrix, y = civilian_complaints_reported_2020)) +
-  geom_bar(stat = "identity", fill = "skyblue", color = "black", alpha = 0.7) +
-  labs(title = "Bar chart: Diversity Index VS Civilian Complaints 2020",
-       x = "Diversity Metrics",
-       y = "Civilian Complaints Reported 2020 (Adjusted for Population)") +
-  coord_cartesian(xlim = c(min(merged_df$diversity_metrix), max(merged_df$diversity_metrix)),
-                  ylim = c(0, 5000)) +
-  theme_minimal() +  # Adjust the theme as needed
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Rotate x-axis labels for better readability
+data <- merged_df
+
+# Function to calculate the Shannon Diversity Index
+calculate_shannon_index <- function(proportions) {
+  proportions <- na.omit(proportions)  # Remove NA values
+  if (length(proportions) == 0) return(NA)  # Return NA if all proportions are NA
+  -sum(proportions * log(proportions))
+}
+
+# Apply the function to calculate the Shannon Diversity Index
+data$diversity_index <- apply(data[,c('percent_officers_white', 'percent_officers_black', 
+                                      'percent_officers_hispanic', 'percent_officers_asianpacific', 
+                                      'percent_officers_native_american', 'percent_officers_other')], 
+                              1, calculate_shannon_index)
+
+# Summing up the complaints over all years
+data$total_complaints <- rowSums(data[,c('civilian_complaints_reported_2016', 
+                                         'civilian_complaints_reported_2018', 
+                                         'civilian_complaints_reported_2019', 
+                                         'civilian_complaints_reported_2020', 
+                                         'civilian_complaints_reported_2021', 
+                                         'civilian_complaints_reported_2022')], 
+                                 na.rm = TRUE)
 
 
+data$diversity_index_grouped <- cut(data$diversity_index, breaks = 10) # This creates 10 groups
+
+data <- na.omit(data[, c('diversity_index_grouped', 'total_complaints')])
+
+ggplot(data, aes(x=diversity_index_grouped, y=total_complaints, fill=diversity_index_grouped)) +
+  geom_bar(stat="identity", position="dodge") +  # Adjust the width as needed
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) + 
+  scale_fill_viridis_d() +  # Use a discrete viridis color scale
+  labs(title='Civilian Complaints by Police Force Diversity',
+       x='Diversity Index Group', 
+       y='Total Civilian Complaints')
 ```
+```{r }
+# Bar chart Diversity Index VS Civilian Complains 2020
+library(ggplot2)
 
+data <- merged_df
+
+# Function to calculate the Shannon Diversity Index
+calculate_shannon_index <- function(proportions) {
+  proportions <- na.omit(proportions)  # Remove NA values
+  if (length(proportions) == 0) return(NA)  # Return NA if all proportions are NA
+  -sum(proportions * log(proportions))
+}
+
+# Apply the function to calculate the Shannon Diversity Index
+data$diversity_index <- apply(data[,c('percent_officers_white', 'percent_officers_black', 
+                                      'percent_officers_hispanic', 'percent_officers_asianpacific', 
+                                      'percent_officers_native_american', 'percent_officers_other')], 
+                              1, calculate_shannon_index)
+
+# Summing up the complaints over all years
+data$total_complaints <- rowSums(data[,c('civilian_complaints_reported_2016', 
+                                         'civilian_complaints_reported_2018', 
+                                         'civilian_complaints_reported_2019', 
+                                         'civilian_complaints_reported_2020', 
+                                         'civilian_complaints_reported_2021', 
+                                         'civilian_complaints_reported_2022')], 
+                                 na.rm = TRUE)
+
+# Assuming data is your dataframe
+data$diversity_index_grouped <- cut(data$diversity_index, breaks = 10) # This creates 10 groups
+
+data <- na.omit(data)
+#  per capita complaints calculated as the number of complaints per 100,000 members of the population
+data$complaints_per_capita <- (data$total_complaints / data$population) * 100000
+
+
+data$diversity_index_grouped <- cut(data$diversity_index, breaks = 10)  # This creates 10 groups
+
+# Plotting per capita complaints
+ggplot(data, aes(x=diversity_index_grouped, y=complaints_per_capita, fill=diversity_index_grouped)) +
+  geom_bar(stat="identity", position="dodge") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_fill_viridis_d() +
+  labs(title='Civilian Complaints by Police Force Diversity (Per Capita)',
+       x='Diversity Index Group', 
+       y='Complaints per 100,000 People')
+```
 
 ## Note on Attribution
 
