@@ -1,11 +1,11 @@
 ---
-title: Data
+title: "Looking at Our Data"
 description: We describe the sources of our data and the cleaning process.
 toc: true
 draft: false
 ---
 
-![](images/data-import-cheatsheet-thumbs.png)
+![](images/police-community.png)
 
 
 This comes from the file `data.qmd`.

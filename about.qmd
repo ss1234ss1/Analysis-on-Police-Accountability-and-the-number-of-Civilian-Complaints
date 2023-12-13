@@ -1,5 +1,5 @@
 ---
-title: "About"
+title: "About Us"
 # image: profile.jpg
 about:
   template: jolla
@@ -15,26 +15,30 @@ about:
       href: https://github.com/sussmanbu/
 
 ---
-
-
-This comes from the file `about.qmd`.
+![](images/team.jpeg)
 
 This is a website for the final project for MA[46]15 Data Science with R by Team TEAMNAME.
 The members of this team are below.
 
 ## Tian Xie 
+### I am a junior studying Economics and Computer Science: https://github.com/jarjarjarviis
 ## Jaden Noh
-# I am a junior this semester, majoring in data science. https://github.com/ss1234ss1
-## Jianing Yi https://github.com/jianing724
+### I am a junior studying Data Science: https://github.com/ss1234ss1
+## Jianing Yi
+### I am a master student studying Appiled Data Analytics: https://github.com/jianing724
 ## Serena Theobald
-# I am a junior studying data science with a minor in Statistics.https://github.com/serenatheo
+### I am a junior studying Data Science with a minor in Statistics: https://github.com/serenatheo
+## Wentao Chen
+### I am a senior studying Economics and international Relations: https://github.com/wentaoc24
 
-Our github page:
+#Our github page:
 https://github.com/sussmanbu/ma-4615-fa23-final-project-team-12.git
 
 <!-- Please leave in the information below -->
 
 
-### About this Template.
+
+
+## About this Template.
 
 This is based off of the standard Quarto website template from RStudio (2023.09.0 Build 463).
