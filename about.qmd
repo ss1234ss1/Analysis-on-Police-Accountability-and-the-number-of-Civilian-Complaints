@@ -17,7 +17,8 @@ about:
 ---
 ![](images/team.jpeg)
 
-This is a website for the final project for MA[46]15 Data Science with R by Team TEAMNAME.
+This is a website for the final project for MA[46]15 Data Science with R by Team 12
+
 The members of this team are below.
 
 ## Tian Xie 
