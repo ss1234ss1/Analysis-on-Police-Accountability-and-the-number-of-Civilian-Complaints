@@ -5,6 +5,7 @@ toc: true
 draft: false
 ---
 
+
 ![](https://upload.wikimedia.org/wikipedia/commons/7/77/Pebbleswithquarzite.jpg)
 
 
@@ -13,6 +14,7 @@ This comes from the file `analysis.qmd`.
 We describe here our detailed data analysis.
 This page will provide an overview of what questions you hope to ask, illustrations relevant aspects of the data with tables and figures, and a statistical model that attempts to answer part of the question.
 You'll also reflect on next steps and further analysis.
+
 
 
 ```{r}
@@ -30,7 +32,9 @@ civilian_complaints= read_csv(file='./data/civilian_complaints.csv', show_col_ty
 
 
 
+
 ## EDA and Modelling 
+
 
 ```{r}
 
@@ -53,7 +57,9 @@ merged_data <- merge(filtered_use_for_force,filtered_cleansed_df1, by = "ORI", a
 merged_data <- subset(merged_data, select = -police_department.x)
 print(merged_data)
 ```
+
 ## Heatmap
+
 ```{r}
 library(gplots)
 library(corrplot)
@@ -64,6 +70,7 @@ corrplot(cor_matrix, method = "color", type = "full", order = "hclust",
          tl.col = "black", tl.srt = 45, 
          diag = TRUE) 
 ```
+
 ```{r}
 
 # Running a simple linear regression
@@ -191,7 +198,6 @@ null_model_poisson <- stan_glm(Total_Less_lethal_force_2020 ~ 1, data = merged_d
 summary(null_model_poisson)
 ```
 
-
 ```{r step 3 Residual Plots}
 merged_data <- subset(merged_data, !is.na(Total_Less_lethal_force_2020) & !is.na(civilian_complaints_sustained_2020))
 
@@ -236,7 +242,6 @@ corrplot(cor_matrix, method = "color", type = "full", order = "hclust",
          tl.col = "black", tl.srt = 45, 
          diag = TRUE) 
 ```
-
 
 ```{r Merged Data Load and transformation} 
 library(tidyverse) 
@@ -295,6 +300,7 @@ ggplot(data, aes(x=diversity_index_grouped, y=total_complaints, fill=diversity_i
        x='Diversity Index Group', 
        y='Total Civilian Complaints')
 ```
+
 ```{r }
 # Bar chart Diversity Index VS Civilian Complains 2020
 library(ggplot2)
@@ -343,6 +349,7 @@ ggplot(data, aes(x=diversity_index_grouped, y=complaints_per_capita, fill=divers
        x='Diversity Index Group', 
        y='Complaints per 100,000 People')
 ```
+
 ```{r}
 # Modelling
   ## merge total lethal force to merged_df
@@ -359,6 +366,7 @@ library(MASS)
 poisson_model <- glm(civilian_complaints_reported_2020 ~ diversity_metrix + population + Total_Less_lethal_force_2020, data = merged_df, family = poisson(link = "log"))
 summary(poisson_model)
 ```
+
 ```
 
 ## Note on Attribution
