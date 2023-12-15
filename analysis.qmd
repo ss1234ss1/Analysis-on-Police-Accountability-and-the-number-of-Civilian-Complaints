@@ -253,6 +253,29 @@ merged_df<-merged_df|>
   )
 ```
 
+```{r Diversity Index}
+
+
+diversity_values <- c(0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0)
+
+positions <- seq(1, length(diversity_values), by = 1)
+
+diversity_and_positions<-data.frame(positions = positions, diversity_values = diversity_values)
+diversity_and_positions<-diversity_and_positions|>
+  mutate(alpha_values=1 / diversity_and_positions$diversity_values)
+
+diversity_and_positions
+
+ggplot(data = diversity_and_positions, aes(x = diversity_values, y = positions, group = 1)) +
+  geom_line(aes(color = diversity_values, alpha = alpha_values)) +
+  scale_color_gradient(low = "green", high = "red", guide = "none") +
+  scale_alpha_continuous(range = c(1, 0.3), guide="none") +  # Adjust the range as needed
+  labs(x = "Diversity", y = "Position", title = "Diversity Line Plot") +
+  theme_minimal()
+
+```
+
+
 ```{r }
 # Bar chart Diversity Index VS Civilian Complains 2020
 library(ggplot2)
