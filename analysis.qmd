@@ -381,8 +381,21 @@ merged_df$Total_Less_lethal_force_2020 <- as.numeric(as.character(merged_df$Tota
 library(MASS)
 poisson_model <- glm(civilian_complaints_reported_2020 ~ diversity_metrix + population + Total_Less_lethal_force_2020, data = merged_df, family = poisson(link = "log"))
 summary(poisson_model)
+# residual plots
+pearson_resid <- residuals(poisson_model, type = "pearson")
+deviance_resid <- residuals(poisson_model, type = "deviance")
+plot(pearson_resid, main = "Pearson Residuals", ylab = "Pearson Residuals", xlab = "Fitted Values")
+abline(h = 0, col = "darkblue")
+plot(deviance_resid, main = "Deviance Residuals", ylab = "Deviance Residuals", xlab = "Fitted Values")
+abline(h = 0, col = "darkblue")
+#heat map
+selected_columns <- c("civilian_complaints_reported_2020", "diversity_metrix", "population", "Total_Less_lethal_force_2020")
+cor_matrix <- cor(merged_df[selected_columns], use = "complete.obs")
+corrplot(cor_matrix, method = "color", type = "full", order = "hclust", 
+         tl.col = "black", tl.srt = 45, 
+         diag = TRUE) 
 ```
-```
+
 
 ## Note on Attribution
 
