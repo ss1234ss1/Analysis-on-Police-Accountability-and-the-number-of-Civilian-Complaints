@@ -96,8 +96,21 @@ Does the increase in police funding have a decreased effect in settlement paymen
 
 How are civilian complaints, use of force, discrimination, and crime rate by race correlated and influence each other?
 
+## Application in Our Dataset:
+  * Categories as Races: In our dataset, each race is treated as a distinct category. The Shannon Diversity Index allows us to measure how these racial categories are represented and distributed within the dataset, particularly focusing on the police force.
+  * Objective: Our main aim is to explore potential correlations or associations between racial diversity in the police force and the frequency or nature of civilian complaints. By applying this index, we can quantitatively evaluate these aspects.
+Working Principle of the Shannon Diversity Index:
+  * Abundance and Evenness: The index calculates diversity by taking into account not just the number of categories (in our case, racial groups) but also how evenly the individuals (police officers) are distributed among these categories.
+  * Formula and Calculation: The index is computed using a specific formula that considers the proportion of each category and then incorporates these proportions into a logarithmic equation to calculate diversity.
+  * Interpreting the Index: A higher value of the Shannon Diversity Index indicates greater diversity, reflecting not only a variety of categories but also a more uniform distribution among them. Conversely, a lower value suggests less diversity, potentially indicating overrepresentation or underrepresentation of certain groups.
+## Significance in Our Research:
+  * Evaluating Inclusivity and Representation: The Shannon Diversity Index will be instrumental in assessing the level of inclusivity and representation of different racial groups in the police force. This is crucial for understanding the dynamics of diversity within law enforcement.
+  * Testing Hypotheses: By analyzing the diversity index results, we can critically examine our hypothesis about the relationship between racial diversity in the police force and civilian complaints. It helps us to determine if a more diverse police force correlates with lower rates of complaints, suggesting better community relations and understanding.
+  * Broader Implications: The findings derived from this index could provide valuable insights for policymakers and law enforcement agencies in addressing diversity-related issues and improving community-police relations.
+  
 
-----
+
+By employing the Shannon Diversity Index in our analysis, we gain a nuanced and quantitative understanding of racial diversity within the police force, which is vital for testing our hypotheses and drawing meaningful conclusions about the impact of diversity on police-civilian interactions.
 
 ## Rubric: On this page
 
