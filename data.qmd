@@ -5,28 +5,28 @@ toc: true
 draft: FALSE
 ---
 ---
-title: "Data"
+title: "Data🔢"
 output: html_document
 ---
 
 ![](images/police-community.png)
 
 
-## Source of our Data
+## Source of our Data📊
 [![](images/scoreboard.png)](https://policescorecard.org)
 We found the data we need while doing research on police accountability while we came across this website on analyzing police conducts across the country. While browsing through the website, we found that they put all the source data they use in scoring police conducts into a [Google drive folder](https://drive.google.com/drive/folders/1XAT1uFPXj5AsvNTzFeNeeTXGLP09HEIh). The dataset we will be utilizing here will be the [Fact Checking dataset ](https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit?usp=sharing).
 
-#### Origins and Purpose of the Data:
+#### Origins and Purpose of the Data🚨:
 The Police Scorecard, the primary data source, represents the first extensive nationwide analysis of police performance in the United States. Covering over 16,000 law enforcement agencies, it provides a detailed evaluation based on numerous factors such as levels of police violence, accountability, racial bias, and other critical aspects of policing. The criteria for this scorecard were meticulously chosen through a collaborative effort involving a review of existing research literature, consultations with experts and activists in the field, and an examination of available policing datasets from various governmental levels. The primary objective of the Police Scorecard is to facilitate informed actions aimed at minimizing police use of force, enhancing accountability, and redefining public safety across communities.
 
-#### The Team Behind the Project:
+#### The Team Behind the Project 🙌:
 The mastermind behind the Police Scorecard is Samuel Sinyangwe, who collaborated with a diverse team comprising data scientists, designers, developers, organizers, and students nationwide. This team is united by their belief in leveraging data for promoting justice, accountability, and transformative change. Continuously evolving, the project's methodology is regularly updated to reflect new feedback and data availability from local, state, and federal agencies. It now includes broader indicators like police stops and searches, the extent of police militarization, analysis of policies and procedures, and outcomes related to disciplinary actions.
 
 
 
 
 
-## Overview of our Data
+## Overview of our Data👀
 
 Our analysis leverages detailed information from three key datasets found in the [Fact Checking dataset ](https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit?usp=sharing), each with its specific variables:
 
@@ -74,7 +74,7 @@ Our analysis leverages detailed information from three key datasets found in the
 ```
 
 
-## Data Loading and Cleaning Process
+## Data Loading and Cleaning Process🧹
 
 * Missing Values in Various Variables: We encountered variables with NA (Not Available) values across our datasets. For instance, in datasets like cleansed_df1, use_for_force, cop_demo, and ori_lookup, we found variables with missing data. We decided to replace these NAs with zeros, particularly in variables where zeros were a meaningful representation, such as in count or frequency data.
 ```{r}
@@ -104,7 +104,7 @@ merged_df<-merged_df|>
   )
 ```
 
-## Shannon Diversity Index Application in Our Dataset:
+## Shannon Diversity Index Application in Our Dataset🗂️
 ![](images/diversity.png)
 
   * Categories as Races: In our dataset, each race is treated as a distinct category. The Shannon Diversity Index allows us to measure how these racial categories are represented and distributed within the dataset, particularly focusing on the police force.

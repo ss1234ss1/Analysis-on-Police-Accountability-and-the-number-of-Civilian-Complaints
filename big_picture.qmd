@@ -1,67 +1,45 @@
 ---
-title: "Big Picture"
-description: "A quick overview of our data."
+title: "Long Way Ahead🛣️"
+description: "Beyond the Badge: Police Diversity and Reduced Use of Force Has No Significant Impact on Civilian Complaints"
 toc: true
 draft: FALSE
 ---
 
 ![](images/big_picture.png)
 
-This comes from the file `big_picture.Rmd`.
-
-Think of this page as your 538/Upshot style article. This means that you should try to tell a story through the data and your analysis. Read articles from those sites and similar sites to get a feeling for what they are like. Importantly, these should be geared towards the general public. You shouldn't assume the reader understands how to interpret a linear regression. Focus on interpretation and visualizations.
-
+This is a story about our quest🏔️ to try to uncover what internal reforms within police departments that can significantly reduce civilian complaints against law enforcement.
 ---
 
-## Rubric: On this page
+## Starting Point🚶
+![](images/2.png)
+Investigating internal police department reforms is vital for fostering accountable and effective law enforcement. This urgency is underscored by the importance of building public trust, a fundamental aspect of community safety and cooperation. Accountability in policing is crucial; it not only misconduct but also reinforces the public's faith in the justice system. Better policing involves practices that prioritize de-escalation, fairness, and community engagement, ensuring that officers perform their duties with respect for all individuals.
 
-You will
+The Murder of George Floyd highlighted the dire consequences of inadequate police accountability. Floyd's death, a result of police brutality, ignited nationwide protests and calls for systemic change. This tragedy brought to the forefront the need for substantial reform in policing, emphasizing the necessity of transparent, respectful, and human rights-oriented law enforcement practices. Ultimately, delving into internal police reforms is not merely a strategy to reduce complaints; it's a crucial step towards ensuring that law enforcement operates with integrity, fairness, and in alignment with democratic values and human dignity. 
 
+## Where we Landed🛬
+![](images/1.png)
 
+As we combed through loads of news articles and datasets, a question gradually took shape in our minds: Could it be that police departments which pivot towards the use of less lethal force receive fewer complaints from civilians?🤔
 
-* Title
-  * Your big picture page should have a creative/click-bait-y title/headline that provides a hint about your thesis.
+During this analytical process, we stumbled upon an unexpected pattern while examining the linear relationship between the implementation of less lethal force and the volume of civilian complaints. The graph, as illustrated below, unexpectedly displayed a weak positive correlation between these two variables. This was a conundrum that challenged our initial assumptions.
+
+![](images/graph1.png)
+Intrigued by this revelation, we decided examine the ratio of less lethal force to the total use of force against civlilian complaints. To visualize this relationship, we opted to create a heatmap(1), a decision that brought us face-to-face with an even more baffling discovery. The heatmap revealed an absence of a significant correlation, manifested in a stark white space. This unexpected finding left us astounded. How could there be virtually no apparent relationship between these two critical aspects of police force usage? This result not only baffled us but also fueled our academic curiosity, prompting further investigation into this complex and uncharted territory.🤯
+![](images/graph2.jpeg)
+  
+**Note**: This page should have no code visible, i.e. use `#| echo: FALSE`. 
+
+(1)a heatmap typically represents a matrix of data values using color gradients. Each cell in the heatmap corresponds to a data point and is colored based on its value relative to other values in the dataset. This allows for quick identification of patterns, correlations, and outliers within the data. For instance, in a dataset representing temperature variations, warmer colors could indicate higher temperatures and cooler colors lower ones. Heatmaps in R are particularly useful for exploring and presenting large datasets, making them a staple tool in data science for uncovering hidden structures and relationships in the data.
+---
+## Teamtalk🎥
+
+Listen to our team members to get a more in-depth view!
+
+<iframe width="712" height="446" src="https://www.youtube.com/embed/Wp-Q3Uu7020" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 * Clarity of Explanation
   * You should have a clear thesis/goal for this page. What are you trying to show? Make sure that you explain your analysis in detail but don't go into top much mathematics or statistics. The audience for this page is the general public (to the extent possible). Your thesis should be a statement, not a question.
   * Each figure should be very polished and also not too complicated. There should be a clear interpretation of the figure so the figure has a clear purpose. Even something like a histogram can be difficult to interpret for non-experts.
 * Creativity
   * Do your best to make things interesting. Think of a story. Think of how each part of your analysis supports the previous part or provides a different perspective.
 * This page should be self-contained.
-  
-**Note**: This page should have no code visible, i.e. use `#| echo: FALSE`.  
-
----
-
-## Rubric: Other components
-
-### Interactive
-
-You will also be required to make an interactive dashboard like [this one](/flex/flex.html).
-
-Your Big Data page should include a link to an interactive dashboard. The dashboard should be created either using Shiny or FlexDashboard (or another tool with professor's approval). This interactive component should in some way support your thesis from your big picture page. Good interactives often provide both high-level understanding of the data while allowing a user to investigate specific scenarios, observations, subgroups, etc.
-
-* Quality and ease of use of the interactive components.
-Is it clear what can be explored using your interactive components?
-Does it enhance and reinforce your conclusions from the Big Picture?
-Plotly with default hover text will get no credit. Be creative!
-
-
-### Video Recording
-
-Make a video recording (probably using Zoom) demonstrating your interactive components.
-You should provide a quick explanation of your data and demonstrate some of the conclusions from your EDA.
-This video should be no longer than 4 minutes.
-Include a link to your video (and password if needed) in your README.md file on your Github repository. You are not required to provide a link on the website.
-This can be presented by any subset of the team members.
-
-
-### Rest of the Site
-
-Finally, here are important things to keep in mind for the rest of the site. 
-
-The main title of your page is informative.
-Each post has an author/description/informative title.
-All lab required posts are present.
-Each page (including the home page) has a nice featured image associated with it.
-Your about page is up to date and clean.
-You have removed the generic posts from the initial site template.

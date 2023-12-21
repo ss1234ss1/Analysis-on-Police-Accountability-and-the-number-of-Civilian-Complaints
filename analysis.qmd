@@ -81,6 +81,26 @@ ggplot(merged_data, aes(x = 1000*Total_Less_lethal_force_2020/Population, y = 10
   geom_point() +
   geom_smooth(method = "lm", se = FALSE)
 ```
+```{r}
+ggplot(merged_data, aes(x = 1000*Total_Less_lethal_force_2020/Population, y = 1000*civilian_complaints_sustained_2020/Population)) +
+  geom_point(color = "blue", size = 1) +  # Adjust color and size of points
+  geom_smooth(method = "lm", se = FALSE, color = "red") +  # Add a linear model line
+  labs(
+    title = "Relationship Between Less Lethal Force and Civilian Complaints",
+    x = "Less Lethal Force per 1000 Population",
+    y = "Sustained Civilian Complaints per 1000 Population",
+    caption = "Data Source: Police Scoreboard"
+  ) +
+  theme_minimal() +  # A cleaner theme
+  theme(
+    plot.title = element_text(hjust = 0.5),  # Center the plot title
+    plot.caption = element_text(hjust = 0),
+    axis.text = element_text(color = "black"),  # Color of axis texts
+    axis.title = element_text(color = "black")  # Color of axis titles
+  ) +
+  scale_x_continuous(labels = scales::comma) +  # Format the x-axis labels
+  scale_y_continuous(labels = scales::comma)   # Format the y-axis labels
+```
 
 ```{r}
 #Bar plot
@@ -317,6 +337,8 @@ ggplot(data, aes(x=diversity_index_grouped, y=total_complaints, fill=diversity_i
   labs(title='Civilian Complaints by Police Force Diversity',
        x='Diversity Index Group', 
        y='Total Civilian Complaints')
+
+
 ```
 ```{r }
 # Bar chart Diversity Index VS Civilian Complains 2020
@@ -365,7 +387,9 @@ ggplot(data, aes(x=diversity_index_grouped, y=complaints_per_capita, fill=divers
   labs(title='Civilian Complaints by Police Force Diversity (Per Capita)',
        x='Diversity Index Group', 
        y='Complaints per 100,000 People')
+
 ```
+
 ```{r}
 # Modelling
   ## merge total lethal force to merged_df
@@ -373,6 +397,7 @@ library(dplyr)
 merged_data_selected <- dplyr::select(merged_data, ORI, Total_Less_lethal_force_2020)
 merged_df <- left_join(merged_df, merged_data_selected, by = c("ori-1" = "ORI"))
   ## replace the missing value of Total_Less_lethal_force_2020 with medium
+
 merged_df <- merged_df %>%
   mutate(Total_Less_lethal_force_2020 = ifelse(is.na(Total_Less_lethal_force_2020), "medium", Total_Less_lethal_force_2020))
 merged_df$Total_Less_lethal_force_2020 <- as.numeric(as.character(merged_df$Total_Less_lethal_force_2020))
@@ -381,6 +406,7 @@ merged_df$Total_Less_lethal_force_2020 <- as.numeric(as.character(merged_df$Tota
 library(MASS)
 poisson_model <- glm(civilian_complaints_reported_2020 ~ diversity_metrix + population + Total_Less_lethal_force_2020, data = merged_df, family = poisson(link = "log"))
 summary(poisson_model)
+
 # residual plots
 pearson_resid <- residuals(poisson_model, type = "pearson")
 deviance_resid <- residuals(poisson_model, type = "deviance")
