@@ -27,7 +27,7 @@ merged_df<-read_csv("data//merged_data.csv")
 view(merged_df)
 
 calculate_diversity_metrix <- function(proportions) {
-  -sum(proportions * log(proportions, base = exp(1)), na.rm = TRUE) 
+  -sum(proportions * log(proportions, base = exp(1)), na.rm = TRUE)
 }
 merged_df<-merged_df|>
   mutate(

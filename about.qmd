@@ -1,5 +1,5 @@
 ---
-title: "About Us️👏"
+title: "About Us"
 # image: profile.jpg
 about:
   template: jolla
@@ -25,22 +25,28 @@ This is a website for the final project for MA[46]15 Data Science with R by Team
 ## The members of this team are below:
 
 ### ![Tian Xie](images/github-mark.png) [Tian Xie](https://github.com/jarjarjarviis) 
-I am a junior studying Economics and Computer Science🙋
+I am a junior studying Economics and Computer Science
 
 ### ![Jaden Noh](images/github-mark.png) [Jaden Noh](https://github.com/ss1234ss1) 
-I am a junior studying Data Science🙋
+I am a junior studying Data Science
 
 ### ![Jianing Yi](images/github-mark.png) [Jianing Yi](https://github.com/jianing724) 
-I am a master student studying Applied Data Analytics🙋
+I am a master student studying Applied Data Analytics
 
 ### ![Serena Theobald](images/github-mark.png) [Serena Theobald](https://github.com/serenatheo) 
-I am a junior studying Data Science with a minor in Statistics🙋
+I am a junior studying Data Science with a minor in Statistics
 
 ### ![Wentao Chen](images/github-mark.png) [Wentao Chen](https://github.com/wentaoc24) 
-I am a senior studying Economics and International Relations🙋
+I am a senior studying Economics and International Relations
 
 
 <!-- Please leave in the information below -->
+
+
+
+
+
+
 #### About this Template
 
 This is based off of the standard Quarto website template from RStudio (2023.09.0 Build 463).
