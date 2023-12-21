@@ -107,7 +107,9 @@ ggplot(merged_data, aes(x = 1000*Total_Less_lethal_force_2020/Population, y = 10
   scale_x_continuous(labels = scales::comma) +  # Format the x-axis labels
   scale_y_continuous(labels = scales::comma)   # Format the y-axis labels
 ```
-This linear regression model is used to analyze and visualize the relationship between the rate of less-lethal force usage by population and the rate of sustained civilian complaints in different police departments.  Since the graph displays a fairly weak positive correlation between rate of less-lethal force usage and rate of sustained civilian complaints. As the use of force (per population) by the police increases, the number of sustained civilian complaints (per population) also tends to increase. In areas or periods where police use more less-lethal force, there tend to be more complaints sustained against the police.This may suggest a need for reviewing and possibly revising the policies and training regarding the use of less-lethal force by police. If increased use of force correlates with more complaints, it could point towards issues in how force is applied or perceived by the public.
+##Analysis of Linear Regression model:
+This linear regression model is used to analyze and visualize the relationship between the rate of less-lethal force usage by population and the rate of sustained civilian complaints in different police departments.  Since the graph displays a fairly weak positive correlation between rate of less-lethal force usage and rate of sustained civilian complaints. As the use of force (per population) by the police increases, the number of sustained civilian complaints (per population) also tends to increase. In areas or periods where police use more less-lethal force, there tend to be more complaints sustained against the police. The observed trend indicates that in areas or periods with heightened less-lethal force usage, there is a corresponding increase in complaints sustained against the police. This pattern warrants attention as it could reflect public perception or reaction to the police's use of force. The correlation might be indicative of broader issues related to how less-lethal force is applied and perceived by the community. Higher rates of complaints could stem from a perceived overuse or inappropriate use of force, even if it's classified as less-lethal.
+
 
 ```{r}
 #Bar plot
@@ -208,6 +210,7 @@ ggplot(filtered_data, aes(x = `Police Department`, y = Complaints_Per_Capita, fi
 
 
 ```
+##Analysis of stacked bar chart:
 To further visualize the discrepancy in civilian complaints among major cities in the United States, we plotted a stacked bar chart that depicts 3 major cities with civilian complaints reported per capita in 2017 vs. 2021. The purpose is to visualize any changes in civilian complaints in these cities before and after the George Floyd incident, a key event in America’s history of police brutality incidents that may have greatly contributed to the amount of complaints different police departments representing different cities in the country receive. The decrease in complaints per capita from 2017 to 2021 might indicate changes or improvements in policing practices, as the global attention brought by George Floyd's death in 2020 could have prompted police departments to implement reforms, more stringent use-of-force policies, or enhanced training, leading to a reduction in actions that result in civilian complaints.
 
 
@@ -238,18 +241,8 @@ plot(density(res))
 
 summary(res)
 ```
-First, we fitted a linear regression model using the lm() function. The model predicts civilian_complaints_sustained_2020 (dependent variable) based on Total_Less_lethal_force_2020 (independent variable). Then, we calculated the residuals of the linear regression model. We created a plot that is used to check for non-random patterns in the residuals, which can indicate issues with the model (like non-linearity or heteroscedasticity). Next, we generated a Quantile-Quantile (Q-Q) plot of the residuals. It’s used to assess whether the residuals are normally distributed. Additionally, we created a density plot of the residuals, another way to visually assess the normality of residuals. The symmetric, bell-shaped curve centered around zero indicates normality. The primary purpose of these steps is to assess the fit and assumptions of the linear regression model. The mean of the residuals being 0 is a good sign, indicating no bias in prediction. However, the wide range between the minimum and maximum values suggests some predictions are far off the mark. The negative values for the first three quartiles (Min, 1st Quartile, Median) suggests a tendency of the model to overestimate. The significiant amount of negative and positive residuals may indicate problems such as non-linearity or influential outliers. 
-
-
-Indication of Overestimation: The negative values for the first three quartiles (Min, 1st Qu., Median) suggest a tendency of the model to overestimate.
-
-Presence of Outliers or Extreme Values: The large difference between the minimum and maximum residuals implies the presence of outliers or extreme values in the data that are not well accounted for by the model.
-
-Potential Model Issues: The substantial negative and positive residuals might indicate problems such as non-linearity, heteroscedasticity (non-constant variance of residuals), or influential outliers.
-
-
-
-
+## Analysis of Linear Regression Model and Residuals:
+First, we fitted a linear regression model using the lm() function. The model predicts civilian_complaints_sustained_2020 (dependent variable) based on Total_Less_lethal_force_2020 (independent variable). This model helps us explore the relationship between the use of less lethal force and the frequency of sustained civilian complaints. After calculating the residuals (the differences between observed and predicted values), we plotted them against the fitted values. This plot is crucial for identifying non-random patterns (like trends or clusters), which can signal potential issues in the model such as non-linearity or heteroscedasticity (non-constant variance). The Quantile-Quantile plot was generated to assess the normality of the residuals. Deviations from a straight line in this plot would indicate departures from normality. In our case, the plot showed a generally normal distribution, as indicated by a symmetric, bell-shaped curve centered around zero. This plot provides another perspective on the distribution of the residuals. Similar to the Q-Q plot, the density plot in our analysis suggested that the residuals are approximately normally distributed.The primary purpose of these steps is to assess the fit and assumptions of the linear regression model. The mean of the residuals being 0 is a good sign, indicating no bias in the model's predictinos. However, the wide range between the minimum (-126.032) and maximum (561.850) values of the residuals indicates that certain predictions by the model are significantly off-target.The negative values for the first three quartiles indicate a tendency towards overestimation in the model's predictions.The substantial difference between the minimum and maximum residuals suggests the presence of outliers or extreme values, which might not be well-represented by the model. 
 
 
 ```{r}
@@ -316,7 +309,8 @@ ggplot(data = diversity_and_positions, aes(x = diversity_values, y = positions, 
   theme_minimal()
 
 ```
-
+#Interpretation of Diversity Plot:
+The linear upward trend in the plot suggests that as you move through different categories or levels (represented by positions), there is a consistent and uniform increase in diversity (represented by diversity_values) across the police departments. This implies that the diversity in these departments increases in a predictable and steady manner from one position to the next.
 
 ```{r }
 library(ggplot2)
@@ -459,7 +453,6 @@ We created the heatmap that is represented as a correlation matrix to evaluate t
 
 
 ##  Limtations⛔️
- From many visualizations like the heatmap and diversity bar charts, we see a positive correlation between police force diversity and civilian complaints (our target variables), a finding that seems counterintuitive to our hypothesis.This insight propels us to investigate further: we are now exploring potential confounders or other underlying factors that may influence this relationship. Additionally, although there is an absence of a clear pattern in our Pearson residual plot, it appears we may have encountered overdispersion as shown in our deviance residual plot. In the next step, we can use the negative binominal regression model to adjust for this.
-
+Through various data visualizations, including heatmaps and diversity bar charts, we have identified a positive correlation between the diversity of police forces and the rate of civilian complaints. This finding is somewhat unexpected, diverging from our initial hypothesis which posited that increased diversity in police departments might correlate with fewer complaints. The counterintuitive nature of this correlation prompts us to delve deeper into the data. We are currently exploring potential confounding variables that could be influencing this relationship. These could include factors like socio-economic status of the areas served by the departments, variations in community policing practices, or regional differences in reporting mechanisms for complaints. Our residual analysis, particularly using the Pearson residual plot, did not reveal a clear pattern, suggesting an acceptable fit of the model in terms of linearity and homogeneity of variance. However, the deviance residual plot indicates the possibility of overdispersion - in which the variance in the response variable is larger than predicted by the model. Overdispersion can affect the reliability of standard error estimates and test statistics, leading to potentially misleading inferences. To address the issue of overdispersion, we plan to employ a negative binomial regression model. This model is more flexible for count data with overdispersion and can provide more accurate estimates of the regression coefficients and their standard errors. The negative binomial regression will allow us to re-assess the relationship between police force diversity and civilian complaints, potentially offering a more nuanced understanding of this dynamic.
 
 -------
