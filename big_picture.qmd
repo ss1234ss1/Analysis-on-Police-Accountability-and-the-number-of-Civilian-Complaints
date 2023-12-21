@@ -8,7 +8,10 @@ draft: FALSE
 ![](images/big_picture.png)
 
 This is a story about our quest🏔️ to try to uncover what internal reforms within police departments that can significantly reduce civilian complaints against law enforcement.
----
+
+<blockquote style="font-size: 2em;">
+  "It's through these systemic changes that we can hope to see a real transformation in policing, one that truly serves and protects all communities."
+</blockquote>
 
 ## Starting Point🚶
 ![](images/2.png)
@@ -19,27 +22,34 @@ The Murder of George Floyd highlighted the dire consequences of inadequate polic
 ## Where we Landed🛬
 ![](images/1.png)
 
-As we combed through loads of news articles and datasets, a question gradually took shape in our minds: Could it be that police departments which pivot towards the use of less lethal force receive fewer complaints from civilians?🤔
+As we combed through loads of news articles and datasets, a question gradually took shape in our minds: Could it be that police departments which pivot towards the use of less lethal force receive fewer complaints from civilians?🤔 As police officers are better equipped with various level of forces to implement, naturally people will file less complain about police use of force. 
 
 During this analytical process, we stumbled upon an unexpected pattern while examining the linear relationship between the implementation of less lethal force and the volume of civilian complaints. The graph, as illustrated below, unexpectedly displayed a weak positive correlation between these two variables. This was a conundrum that challenged our initial assumptions.
 
 ![](images/graph1.png)
 Intrigued by this revelation, we decided examine the ratio of less lethal force to the total use of force against civlilian complaints. To visualize this relationship, we opted to create a heatmap(1), a decision that brought us face-to-face with an even more baffling discovery. The heatmap revealed an absence of a significant correlation, manifested in a stark white space. This unexpected finding left us astounded. How could there be virtually no apparent relationship between these two critical aspects of police force usage? This result not only baffled us but also fueled our academic curiosity, prompting further investigation into this complex and uncharted territory.🤯
 ![](images/graph2.jpeg)
-  
-**Note**: This page should have no code visible, i.e. use `#| echo: FALSE`. 
+<blockquote style="font-size: 0.8em;">
+  "(1)a heatmap typically represents a matrix of data values using color gradients. Each cell in the heatmap corresponds to a data point and is colored based on its value relative to other values in the dataset. This allows for quick identification of patterns, correlations, and outliers within the data. For instance, in a dataset representing temperature variations, warmer colors could indicate higher temperatures and cooler colors lower ones. Heatmaps in R are particularly useful for exploring and presenting large datasets, making them a staple tool in data science for uncovering hidden structures and relationships in the data."
+</blockquote>
+## Pitstop🏎️
+![](images/3.png)
+As we delved deeper into analyzing the unexpected results, we reached a pivotal conclusion. It became clear that regardless of the reduced intensity in the use of force, the police are still employing a form of force, or violence, against community members. This realization led us to understand that, from the perspective of the public, the distinction between different types of force, such as being pepper-sprayed versus being struck with a baton, might not significantly alter their perception. In essence, the core issue lies in the very act of force being used, rather than its severity. This insight suggests that any form of force, whether lethal or less lethal, could be viewed similarly in terms of how it impacts civilian complaints and public trust.
 
-(1)a heatmap typically represents a matrix of data values using color gradients. Each cell in the heatmap corresponds to a data point and is colored based on its value relative to other values in the dataset. This allows for quick identification of patterns, correlations, and outliers within the data. For instance, in a dataset representing temperature variations, warmer colors could indicate higher temperatures and cooler colors lower ones. Heatmaps in R are particularly useful for exploring and presenting large datasets, making them a staple tool in data science for uncovering hidden structures and relationships in the data.
----
+## End Game🚏
+![](images/4.png)
+In light of our initial findings, we decided to re-examine our dataset to explore alternative hypotheses. Our attention then shifted to the demographics of police departments. Could a more diverse police force correlate with fewer civilian complaints? The rationale behind this is straightforward: a police force that mirrors the diversity of the community it serves might be more empathetic and understanding, thereby potentially reducing friction.
+
+To assess this, we applied a diversity index to standardize the departments (details elaborated in the data page). Our exploratory data analysis (EDA) initially revealed a promising correlation. However, a twist emerged when we conducted regression analysis. Surprisingly, the predictors for diversity were positive, contradicting our original hypothesis of 'more diversity leading to fewer complaints.'
+
+This led us to scrutinize our dataset more closely. Post-cleaning, from an alleged 16,000 departmental entries, only 800+ remained, casting doubts on its representativeness for the entire United States. Moreover, we observed that larger cities often contributed the most complete and detailed data. Consequently, we concluded that neither the diversity within the police force nor the shift to less lethal force significantly impacts civilian complaints against policing. However, the dataset's skewed representation towards major cities likely influenced our results.
+
+Our research underscored a critical issue: the lack of a standardized national mechanism for reporting police activity hampers the ability to accurately gauge the impact of policing on local communities. Post-2020, it's challenging to ascertain if there's a nationwide improvement in police discipline. We also discovered that many police departments intentionally obstruct public record requests, a significant factor behind the creation of the police scoreboard website.
+
+Looking ahead, we strongly advocate for a national standard in reporting police use of force and internal affairs complaints. Such a standard would greatly enhance transparency and accountability within police departments, contributing to the prevention of tragedies like the murder of George Floyd. It's through these systemic changes that we can hope to see a real transformation in policing, one that truly serves and protects all communities.
+
 ## Teamtalk🎥
 
 Listen to our team members to get a more in-depth view!
 
 <iframe width="712" height="446" src="https://www.youtube.com/embed/Wp-Q3Uu7020" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-* Clarity of Explanation
-  * You should have a clear thesis/goal for this page. What are you trying to show? Make sure that you explain your analysis in detail but don't go into top much mathematics or statistics. The audience for this page is the general public (to the extent possible). Your thesis should be a statement, not a question.
-  * Each figure should be very polished and also not too complicated. There should be a clear interpretation of the figure so the figure has a clear purpose. Even something like a histogram can be difficult to interpret for non-experts.
-* Creativity
-  * Do your best to make things interesting. Think of a story. Think of how each part of your analysis supports the previous part or provides a different perspective.
-* This page should be self-contained.
