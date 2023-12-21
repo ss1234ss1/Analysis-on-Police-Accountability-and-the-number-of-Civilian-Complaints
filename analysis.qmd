@@ -295,6 +295,9 @@ ggplot(data, aes(x=diversity_index_grouped, y=total_complaints, fill=diversity_i
        x='Diversity Index Group', 
        y='Total Civilian Complaints')
 ```
+
+
+
 ```{r }
 # Bar chart Diversity Index VS Civilian Complains 2020
 library(ggplot2)
