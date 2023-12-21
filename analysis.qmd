@@ -66,6 +66,9 @@ corrplot(cor_matrix, method = "color", type = "full", order = "hclust",
          tl.col = "black", tl.srt = 45, 
          diag = TRUE) 
 ```
+In the context of analyzing data related to police brutality, particularly focusing on aspects of police use of force and complaints, we calculated a correlation matrix and visualized it as a heatmap for these variables: total_less_lethal_force_2020, population, civilian_complaints_sustained_2020, and discrimination_complaints_sustained_2020. We found that there is a strong correlation between population variable and total less lethal force in 2020, so we used these specific variables to further investigate our research question and create a simple linear regression plot that assesses the distribution of total less lethal force by population.
+
+
 ```{r}
 
 # Running a simple linear regression
@@ -104,6 +107,7 @@ ggplot(merged_data, aes(x = 1000*Total_Less_lethal_force_2020/Population, y = 10
   scale_x_continuous(labels = scales::comma) +  # Format the x-axis labels
   scale_y_continuous(labels = scales::comma)   # Format the y-axis labels
 ```
+This linear regression model is used to analyze and visualize the relationship between the rate of less-lethal force usage by population and the rate of sustained civilian complaints in different police departments.  Since the graph displays a fairly weak positive correlation between rate of less-lethal force usage and rate of sustained civilian complaints. As the use of force (per population) by the police increases, the number of sustained civilian complaints (per population) also tends to increase. In areas or periods where police use more less-lethal force, there tend to be more complaints sustained against the police.This may suggest a need for reviewing and possibly revising the policies and training regarding the use of less-lethal force by police. If increased use of force correlates with more complaints, it could point towards issues in how force is applied or perceived by the public.
 
 ```{r}
 #Bar plot
@@ -204,6 +208,8 @@ ggplot(filtered_data, aes(x = `Police Department`, y = Complaints_Per_Capita, fi
 
 
 ```
+To further visualize the discrepancy in civilian complaints among major cities in the United States, we plotted a stacked bar chart that depicts 3 major cities with civilian complaints reported per capita in 2017 vs. 2021. The purpose is to visualize any changes in civilian complaints in these cities before and after the George Floyd incident, a key event in America’s history of police brutality incidents that may have greatly contributed to the amount of complaints different police departments representing different cities in the country receive. The decrease in complaints per capita from 2017 to 2021 might indicate changes or improvements in policing practices, as the global attention brought by George Floyd's death in 2020 could have prompted police departments to implement reforms, more stringent use-of-force policies, or enhanced training, leading to a reduction in actions that result in civilian complaints.
+
 
 ```{r}
 #install.packages("rstanarm")
@@ -232,6 +238,19 @@ plot(density(res))
 
 summary(res)
 ```
+First, we fitted a linear regression model using the lm() function. The model predicts civilian_complaints_sustained_2020 (dependent variable) based on Total_Less_lethal_force_2020 (independent variable). Then, we calculated the residuals of the linear regression model. We created a plot that is used to check for non-random patterns in the residuals, which can indicate issues with the model (like non-linearity or heteroscedasticity). Next, we generated a Quantile-Quantile (Q-Q) plot of the residuals. It’s used to assess whether the residuals are normally distributed. Additionally, we created a density plot of the residuals, another way to visually assess the normality of residuals. The symmetric, bell-shaped curve centered around zero indicates normality. The primary purpose of these steps is to assess the fit and assumptions of the linear regression model. The mean of the residuals being 0 is a good sign, indicating no bias in prediction. However, the wide range between the minimum and maximum values suggests some predictions are far off the mark. The negative values for the first three quartiles (Min, 1st Quartile, Median) suggests a tendency of the model to overestimate. The significiant amount of negative and positive residuals may indicate problems such as non-linearity or influential outliers. 
+
+
+Indication of Overestimation: The negative values for the first three quartiles (Min, 1st Qu., Median) suggest a tendency of the model to overestimate.
+
+Presence of Outliers or Extreme Values: The large difference between the minimum and maximum residuals implies the presence of outliers or extreme values in the data that are not well accounted for by the model.
+
+Potential Model Issues: The substantial negative and positive residuals might indicate problems such as non-linearity, heteroscedasticity (non-constant variance of residuals), or influential outliers.
+
+
+
+
+
 
 ```{r}
 library(gplots)
@@ -275,6 +294,7 @@ merged_df<-merged_df|>
   )
 ```
 
+
 ```{r Diversity Index}
 
 
@@ -299,7 +319,6 @@ ggplot(data = diversity_and_positions, aes(x = diversity_values, y = positions, 
 
 
 ```{r }
-# Bar chart Diversity Index VS Civilian Complains 2020
 library(ggplot2)
 
 data <- merged_df
@@ -342,6 +361,10 @@ ggplot(data, aes(x=diversity_index_grouped, y=total_complaints, fill=diversity_i
 
 
 ```
+We graphed a bar chart to aggregate civilian complaints reported from 2016 to 2022 for each police department. These totals are then polotted against the Shannon Diversity Index, calculated based on the racial and ethnic composition of their officers. This index serves as a quantitative measure of diversity, with higher values indicating greater diversity. We grouped the data into ten categories representing different ranges of diversity. It appears that the police departments in higher bracket diversity ranges receive higher complaints, and lower diversity ranges receive fewer complaints in general, which appears countertuitive to our hypothesis. 
+
+
+
 ```{r }
 # Bar chart Diversity Index VS Civilian Complains 2020
 library(ggplot2)
@@ -392,7 +415,7 @@ ggplot(data, aes(x=diversity_index_grouped, y=complaints_per_capita, fill=divers
 
 ```
 
-## Then, we use poisson regression to figure out is there any significant relationship between our target variables.🧮
+The second bar chart delves into complaints per capita, providing a nuanced view by accounting for the population size served by each police department. This helps us assess whether a higher diversity within police departments correlates with variations in the rate of complaints. Our bar chart visualizations reveal a positive correlation between police force diversity and civilian complaints, a finding that initially seems counterintuitive to our hypothesis. This insight propels us to investigate further: we are now exploring other regression models to  better understand the relationship between our target variables. As we uncover new insights, we are continuously refining our visualizations and statistical models. This iterative process ensures that our visual representations and analyses accurately reflect the complexities of the data. Due to these patterns from the bar charts and a non-linear relatinship that may not be captured by our linear regression model, we will thus employ more sophisticated statistical techniques, such as using a poisson regression model to assess if there any significant relationship between our target variables. We believe poisson regression approach is well-suited for count data like civilian complaints.🧮
 
 
 
@@ -427,9 +450,16 @@ corrplot(cor_matrix, method = "color", type = "full", order = "hclust",
          tl.col = "black", tl.srt = 45, 
          diag = TRUE) 
 ```
-##  Limtations⛔️
-Although there is an relationship between the two target variables, they are positively correlated, which is different from our common sense. That will lead us to figure out is there any confounders related to the target variables. What's more, according to the residual plot, it seems like we encountered overdispersion. In the next step, we can use the negative binominal regression model to fix it.
+## Interpretation of Poisson regression model: 
+The coefficient of the diversity_metrix suggests that an increase in the diversity metric significantly increases the log count of civilian complaints. This might indicate that departments with greater diversity see more reported complaints, but it's important to consider potential confounding factors. The positive coefficient for population implies that larger populations are associated with a higher log count of civilian complaints. This is intuitive, as larger populations would naturally have more interactions with the police. The coefficient of "Total Less Lethal Force 2020" indicates that an increase in less lethal force usage is associated with a higher log count of civilian complaints. It suggests a relationship between the frequency of using less lethal force and the number of complaints. The model shows a statistically significant relationship between the predictors and total number of civilian complaints. Increased diversity might correlate with higher reported complaints due to various reasons. For instance, more diverse departments could be located in areas with higher population densities or more active community engagement, leading to a higher number of interactions and, consequently, complaints.Diverse departments might have more robust or transparent reporting mechanisms, encouraging community members to report complaints more freely. There also may be confounding factors influencing this relationship. For example, socio-economic factors, community-police relations, or regional differences in policing practices could play a significant role influencing the relationship between total civilian complaints and diversity among the police departments.
 
+##Interpretation of heatmap:
+We created the heatmap that is represented as a correlation matrix to evaluate the relationship between the diversity in police departments and the total civilian complaints reported in 2020.There seems to be a fairly positive correlation between diversity in police departments and number of civilian complaints reported in 2020. Diverse police departments may be more visible or scrutinized in their communities, leading to a higher likelihood of civilian complaints being reported. This could be due to increased community engagement or a higher level of trust that complaints will be taken seriously. In addition, departments with more diversity might be situated in urban or diverse areas where a larger number of interactions between police and civilians naturally leads to more complaints. The correlation could reflect underlying socio-demographic dynamics rather than the direct impact of the police force's diversity, which could be a confounding factor.
+
+
+
+##  Limtations⛔️
+ From many visualizations like the heatmap and diversity bar charts, we see a positive correlation between police force diversity and civilian complaints (our target variables), a finding that seems counterintuitive to our hypothesis.This insight propels us to investigate further: we are now exploring potential confounders or other underlying factors that may influence this relationship. Additionally, although there is an absence of a clear pattern in our Pearson residual plot, it appears we may have encountered overdispersion as shown in our deviance residual plot. In the next step, we can use the negative binominal regression model to adjust for this.
 
 
 -------
