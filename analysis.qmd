@@ -11,8 +11,13 @@ draft: FALSE
 This comes from the file `analysis.qmd`.
 
 We describe here our detailed data analysis.
-This page will provide an overview of what questions you hope to ask, illustrations relevant aspects of the data with tables and figures, and a statistical model that attempts to answer part of the question.
-You'll also reflect on next steps and further analysis.
+Introduce what motivates our Data Analysis (DA)
+## Motivation and Introduction to Dataset
+The Police Scorecard database consolidates information from various authoritative databases both on the federal and state levels, such as the FBI's Uniform Crime Report (UCR), the Bureau of Justice Statistics' Annual Jail Survey, the US Census Bureau's Assessment of State and Local Government Finances, and the California Department of Justice's OpenJustice database. This project is designed to help communities, researchers, police leaders and policy-makers take data-informed action to reduce police use of force, increase accountability and reimagine public safety in their jurisdictions. In instances where specific agencies did not provide data to these recognized platforms, they looked towards local publications and news articles as alternative sources. 
+Furthermore, details regarding fatalities resulting from police actions were sourced from the Mapping Police Violence database. This database records every instance where police actions directly led to an individual's demise, be it through firearms or other means. In addition to this, information about non-fatal instances of police using force and complaints about police misconduct was gathered directly from the respective police departments. This was done through accessing public records, scrutinizing annual reports, and navigating through the open data websites of these departments.
+## Research Question
+Our research question is that is there relationship between the diversity of police officers (races)  of each police department and civilian complains towards the police?
+Our target variables are diversity index and civilian complaints.
 
 
 ```{r}
@@ -33,8 +38,6 @@ civilian_complaints= read_csv(file='./data/civilian_complaints.csv', show_col_ty
 ## EDA and Modelling 
 
 ```{r}
-
-table(cleansed_df1$ORI)
 filtered_cleansed_df1 <- cleansed_df1 %>%
   group_by(ORI) %>%
   filter(n() == 1)
@@ -51,7 +54,6 @@ colnames(filtered_use_for_force)[colnames(filtered_use_for_force) == "Police Dep
 
 merged_data <- merge(filtered_use_for_force,filtered_cleansed_df1, by = "ORI", all = TRUE)
 merged_data <- subset(merged_data, select = -police_department.x)
-print(merged_data)
 ```
 ## Heatmap
 ```{r}
@@ -197,7 +199,6 @@ merged_data <- subset(merged_data, !is.na(Total_Less_lethal_force_2020) & !is.na
 
 #merged_data<-merged_data|>
 #  filter(is.na(Total_Less_lethal_force_2020)==FALSE & is.na(civilian_complaints_sustained_2020)==FALSE)
-merged_data
 
 regression_model<-lm(civilian_complaints_sustained_2020~Total_Less_lethal_force_2020,data=merged_data)
 
@@ -228,7 +229,7 @@ columns_to_standardize <- c(
 data_to_standardize <- merged_data[columns_to_standardize]
 scaled_data <- scale(data_to_standardize)
 merged_data[columns_to_standardize] <- scaled_data
-print(merged_data)
+
 #heatmap
 selected_columns <- c("Total_Less_lethal_force_2020","Population","civilian_complaints_sustained_2020","discrimination_complaints_sustained_2020")
 cor_matrix <- cor(merged_data[selected_columns], use = "complete.obs")
@@ -366,6 +367,7 @@ ggplot(data, aes(x=diversity_index_grouped, y=complaints_per_capita, fill=divers
        x='Diversity Index Group', 
        y='Complaints per 100,000 People')
 ```
+## Then, we use poisson regression to figure out is there any significant relationship between our target variables.
 ```{r}
 # Modelling
   ## merge total lethal force to merged_df
@@ -395,20 +397,10 @@ corrplot(cor_matrix, method = "color", type = "full", order = "hclust",
          tl.col = "black", tl.srt = 45, 
          diag = TRUE) 
 ```
+##  Limtations:
+Although there is an relationship between the two target variables, they are positively correlated, which is different from our common sense. That will lead us to figure out is there any confounders related to the target variables. What's more, according to the residual plot, it seems like we encountered overdispersion. In the next step, we can use the negative binominal regression model to fix it.
 
 
-## Note on Attribution
-
-In general, you should try to provide links to relevant resources, especially those that helped you. You don't have to link to every StackOverflow post you used but if there are explainers on aspects of the data or specific models that you found helpful, try to link to those. Also, try to link to other sources that might support (or refute) your analysis. These can just be regular hyperlinks. You don't need a formal citation.
-
-
-If you are directly quoting from a source, please make that clear. You can show quotes using `>` like this
-
-```
-> To be or not to be.
-```
-
-> To be or not to be.
 
 -------
 
