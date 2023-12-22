@@ -11,8 +11,17 @@ draft: FALSE
 This comes from the file `analysis.qmd`.
 
 We describe here our detailed data analysis.
-This page will provide an overview of what questions you hope to ask, illustrations relevant aspects of the data with tables and figures, and a statistical model that attempts to answer part of the question.
-You'll also reflect on next steps and further analysis.
+Introduce what motivates our Data Analysis (DA)
+
+## Motivation and Introduction to Dataset
+  The Police Scorecard database consolidates information from various authoritative databases both on the federal and state levels, such as the FBI's Uniform Crime Report (UCR), the Bureau of Justice Statistics' Annual Jail Survey, the US Census Bureau's Assessment of State and Local Government Finances, and the California Department of Justice's OpenJustice database. This project is designed to help communities, researchers, police leaders and policy-makers take data-informed action to reduce police use of force, increase accountability and reimagine public safety in their jurisdictions. In instances where specific agencies did not provide data to these recognized platforms, they looked towards local publications and news articles as alternative sources. 
+
+  Furthermore, details regarding fatalities resulting from police actions were sourced from the Mapping Police Violence database. This database records every instance where police actions directly led to an individual's demise, be it through firearms or other means. In addition to this, information about non-fatal instances of police using force and complaints about police misconduct was gathered directly from the respective police departments. This was done through accessing public records, scrutinizing annual reports, and navigating through the open data websites of these departments.
+  
+
+## Research Question
+Our research question is that is there relationship between the diversity of police officers (races)  of each police department and civilian complains towards the police? Our target variables are diversity index and civilian complaints.
+We hypothesize that greater diversity within police departments may correlate with a lower rate of civilian complaints, reflecting enhanced community trust and effective policing methods.
 
 
 ```{r}
@@ -31,10 +40,9 @@ civilian_complaints= read_csv(file='./data/civilian_complaints.csv', show_col_ty
 
 
 ## EDA and Modelling 
+We create a subset of cleansed_df1 containing only unique entries by the 'ORI' identifier and then prints the resulting data frame. It's useful when we're interested in departments with a single record in our dataset.Similarly, we filter the use_for_force data frame to include only unique 'ORI' entries and displays the output. It ensures we work with one record per department when analyzing use-of-force data.
 
 ```{r}
-
-table(cleansed_df1$ORI)
 filtered_cleansed_df1 <- cleansed_df1 %>%
   group_by(ORI) %>%
   filter(n() == 1)
@@ -46,14 +54,16 @@ filtered_use_for_force <- use_for_force %>%
 print(filtered_use_for_force)
 ```
 
+We then rename the column "Police Department" to "police_department" in the filtered_use_for_force data frame for consistency in naming conventions, merge the filtered_use_for_force data frame with the filtered_cleansed_df1 data frame based on the 'ORI' column, including all records from both data frames even if there are no matching values (full outer join), and subset merged_data to remove the column police_department.x, which is likely a duplicate created during the merge operation.
+
 ```{r}
 colnames(filtered_use_for_force)[colnames(filtered_use_for_force) == "Police Department"] <- "police_department"
 
 merged_data <- merge(filtered_use_for_force,filtered_cleansed_df1, by = "ORI", all = TRUE)
 merged_data <- subset(merged_data, select = -police_department.x)
-print(merged_data)
 ```
-## Heatmap
+
+The first section of the code visualizes the relationships between key variables like less lethal force and various types of complaints using a heatmap. The image represents the correlation coefficients between several variables: discrimination complaints sustained in 2020, civilian complaints sustained in 2020, total less lethal force used in 2020, and population. The color intensity and the scale on the right indicate the strength and direction of the correlation: dark blue represents a strong positive correlation, light blue indicates a weaker positive correlation, white signifies no correlation, and shades of red suggest negative correlations.
 ```{r}
 library(gplots)
 library(corrplot)
@@ -64,6 +74,9 @@ corrplot(cor_matrix, method = "color", type = "full", order = "hclust",
          tl.col = "black", tl.srt = 45, 
          diag = TRUE) 
 ```
+The second part focuses on analyzing the impact of less lethal force and population on civilian complaints through a linear regression model, concluding with a graphical representation of these relationships using a scatter plot and a regression line. This approach provides a clear understanding of the data's patterns and interactions. 
+The points are densely concentrated near the origin, suggesting that for most data entries, the scaled values of less lethal force and complaints are relatively low. The linear regression line, shown in blue, is almost flat and stays close to the zero on the y-axis, indicating that there might be a very weak or no significant linear relationship between the less lethal force applied and the number of sustained civilian complaints, according to this dataset for the year 2020.
+The absence of a steep slope in the regression line suggests that increases in less lethal force do not correspond to large increases in the rate of civilian complaints sustained, at least not in a way that is captured by a simple linear model. However, it's important to note that the presence of any outliers or a high concentration of data points near the origin could affect the regression line. Moreover, the absence of a strong linear relationship does not rule out more complex relationships that could exist between these variables.
 ```{r}
 
 # Running a simple linear regression
@@ -81,6 +94,37 @@ ggplot(merged_data, aes(x = 1000*Total_Less_lethal_force_2020/Population, y = 10
   geom_point() +
   geom_smooth(method = "lm", se = FALSE)
 ```
+We then create a scatter plot to illustrate the relationship between less lethal force and civilian complaints, adjusted per 1000 population. It enhances the visualization with a linear regression line, indicating trends in the data. Key elements like color and size adjustments for clarity, comprehensive labels and titles for context, and a clean, minimalistic theme make the plot both informative and visually appealing. Custom formatting of axis labels ensures readability, making the plot a clear and effective tool for understanding the data's patterns and interactions. 
+
+This catter plot illustrates the relationship between less lethal force and sustained civilian complaints, both normalized per 1000 population. The x-axis shows the less lethal force used per 1000 people, while the y-axis shows the number of sustained civilian complaints per 1000 people.
+
+The blue dots represent individual data points. The horizontal distribution of dots shows the range of less lethal force used across the dataset, while the vertical distribution indicates the range of complaints. Most dots are clustered near the origin, which suggests that for the majority of the data, there is a low rate of both less lethal force and complaints.
+
+A red linear regression line is present, which appears to be almost flat, suggesting there is little to no linear relationship between the two variables across the dataset. The line indicates that an increase in less lethal force does not necessarily correlate with an increase in the rate of complaints sustained, based on the data shown.
+
+```{r}
+ggplot(merged_data, aes(x = 1000*Total_Less_lethal_force_2020/Population, y = 1000*civilian_complaints_sustained_2020/Population)) +
+  geom_point(color = "blue", size = 1) +  # Adjust color and size of points
+  geom_smooth(method = "lm", se = FALSE, color = "red") +  # Add a linear model line
+  labs(
+    title = "Relationship Between Less Lethal Force and Civilian Complaints",
+    x = "Less Lethal Force per 1000 Population",
+    y = "Sustained Civilian Complaints per 1000 Population",
+    caption = "Data Source: Police Scoreboard"
+  ) +
+  theme_minimal() +  # A cleaner theme
+  theme(
+    plot.title = element_text(hjust = 0.5),  # Center the plot title
+    plot.caption = element_text(hjust = 0),
+    axis.text = element_text(color = "black"),  # Color of axis texts
+    axis.title = element_text(color = "black")  # Color of axis titles
+  ) +
+  scale_x_continuous(labels = scales::comma) +  # Format the x-axis labels
+  scale_y_continuous(labels = scales::comma)   # Format the y-axis labels
+```
+
+We produce a series of bar plots to compare civilian complaints per capita across key cities and years. Initially, it filters and summarizes complaint data for selected cities, calculating per capita figures for 2017 and 2021. Two separate bar plots are then created for each year, using green for 2017 and red for 2021, to visualize complaints per capita in major police departments. The plots are made reader-friendly with titles, axis labels, and a minimalistic design, with the x-axis labels angled for better readability. 
+Finally, the data for both years is combined and filtered for specific cities, creating a stacked bar plot that contrasts the complaint rates for 2017 and 2021 in each city. This final plot provides a clear visual comparison of changes in civilian complaints over time, enhancing understanding of trends and differences between these key years. We can see that the complaints per 10000 people increase in Detroit, but for LA and NY, it does not change too much.
 
 ```{r}
 #Bar plot
@@ -191,13 +235,13 @@ null_model_poisson <- stan_glm(Total_Less_lethal_force_2020 ~ 1, data = merged_d
 summary(null_model_poisson)
 ```
 
+We conduct residual plots for analysis. The plots indicate that while the model may capture the relationship between the predictors and response to an extent, there are indications of outliers or extreme values, and the residuals do not follow a perfect normal distribution. 
 
 ```{r step 3 Residual Plots}
 merged_data <- subset(merged_data, !is.na(Total_Less_lethal_force_2020) & !is.na(civilian_complaints_sustained_2020))
 
 #merged_data<-merged_data|>
 #  filter(is.na(Total_Less_lethal_force_2020)==FALSE & is.na(civilian_complaints_sustained_2020)==FALSE)
-merged_data
 
 regression_model<-lm(civilian_complaints_sustained_2020~Total_Less_lethal_force_2020,data=merged_data)
 
@@ -210,6 +254,10 @@ plot(density(res))
 
 summary(res)
 ```
+
+## Heatmap
+
+We draw a heatmap, which is a graphical representation of data where individual values contained in a matrix are represented as colors. The heatmap in question displays the correlation coefficients between different variables: discrimination complaints sustained in 2020, civilian complaints sustained in 2020, total less lethal force used in 2020, and population.
 
 ```{r}
 library(gplots)
@@ -228,7 +276,7 @@ columns_to_standardize <- c(
 data_to_standardize <- merged_data[columns_to_standardize]
 scaled_data <- scale(data_to_standardize)
 merged_data[columns_to_standardize] <- scaled_data
-print(merged_data)
+
 #heatmap
 selected_columns <- c("Total_Less_lethal_force_2020","Population","civilian_complaints_sustained_2020","discrimination_complaints_sustained_2020")
 cor_matrix <- cor(merged_data[selected_columns], use = "complete.obs")
@@ -252,6 +300,31 @@ merged_df<-merged_df|>
     .after=7
   )
 ```
+
+```{r Diversity Index}
+
+
+diversity_values <- c(0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0)
+
+positions <- seq(1, length(diversity_values), by = 1)
+
+diversity_and_positions<-data.frame(positions = positions, diversity_values = diversity_values)
+diversity_and_positions<-diversity_and_positions|>
+  mutate(alpha_values=1 / diversity_and_positions$diversity_values)
+
+diversity_and_positions
+
+ggplot(data = diversity_and_positions, aes(x = diversity_values, y = positions, group = 1)) +
+  geom_line(aes(color = diversity_values, alpha = alpha_values)) +
+  scale_color_gradient(low = "green", high = "red", guide = "none") +
+  scale_alpha_continuous(range = c(1, 0.3), guide="none") +  # Adjust the range as needed
+  labs(x = "Diversity", y = "Position", title = "Diversity Line Plot") +
+  theme_minimal()
+
+```
+
+
+The resulting visualization is a bar chart that aims to show if there's any visible trend or pattern between the diversity of police forces and the number of civilian complaints reported. The chart in the uploaded image shows that as the diversity index increases, there is variability in the number of total civilian complaints, with some higher diversity bins showing more complaints and some showing fewer. 
 
 ```{r }
 # Bar chart Diversity Index VS Civilian Complains 2020
@@ -294,9 +367,11 @@ ggplot(data, aes(x=diversity_index_grouped, y=total_complaints, fill=diversity_i
   labs(title='Civilian Complaints by Police Force Diversity',
        x='Diversity Index Group', 
        y='Total Civilian Complaints')
+
+
 ```
 
-
+The title of the chart, "Civilian Complaints by Police Force Diversity (Per Capita)," indicates that the chart aims to show the relationship between the diversity of a police force and the number of civilian complaints on a per capita basis. The chart provided in the uploaded image shows different bars representing different ranges of diversity indexes, with the height of the bar representing the number of complaints per 100,000 people. This visualization is useful for identifying any trends or patterns in the data that may indicate a relationship between police force diversity and the number of civilian complaints.
 
 ```{r }
 # Bar chart Diversity Index VS Civilian Complains 2020
@@ -345,7 +420,16 @@ ggplot(data, aes(x=diversity_index_grouped, y=complaints_per_capita, fill=divers
   labs(title='Civilian Complaints by Police Force Diversity (Per Capita)',
        x='Diversity Index Group', 
        y='Complaints per 100,000 People')
+
 ```
+
+## Then, we use poisson regression to figure out is there any significant relationship between our target variables.
+
+The model predicts the number of civilian complaints reported in 2020 (civilian_complaints_reported_2020) based on a diversity metric (diversity_metrix), population size (population), and the total less lethal force used in 2020 (Total_Less_lethal_force_2020). 
+The possion regression indicates that all predictors are highly statistically significant (p < 0.001), meaning there's strong evidence that they are related to the number of civilian complaints reported in 2020. The positive coefficients for diversity_metrix and Total_Less_lethal_force_2020 suggest that higher values of these predictors are associated with an increased log count of civilian complaints, while the coefficient for population is very close to zero, suggesting a smaller effect size. 
+
+The images show the Pearson and Deviance residual plots and the correlation heatmap. The residual plots would be examined for patterns that might indicate issues with the model, such as non-linearity, overdispersion, or influential outliers. The heatmap would be used to assess whether there are strong linear relationships between the variables in question that could have an impact on the analysis. 
+
 ```{r}
 # Modelling
   ## merge total lethal force to merged_df
@@ -353,6 +437,7 @@ library(dplyr)
 merged_data_selected <- dplyr::select(merged_data, ORI, Total_Less_lethal_force_2020)
 merged_df <- left_join(merged_df, merged_data_selected, by = c("ori-1" = "ORI"))
   ## replace the missing value of Total_Less_lethal_force_2020 with medium
+
 merged_df <- merged_df %>%
   mutate(Total_Less_lethal_force_2020 = ifelse(is.na(Total_Less_lethal_force_2020), "medium", Total_Less_lethal_force_2020))
 merged_df$Total_Less_lethal_force_2020 <- as.numeric(as.character(merged_df$Total_Less_lethal_force_2020))
@@ -361,21 +446,25 @@ merged_df$Total_Less_lethal_force_2020 <- as.numeric(as.character(merged_df$Tota
 library(MASS)
 poisson_model <- glm(civilian_complaints_reported_2020 ~ diversity_metrix + population + Total_Less_lethal_force_2020, data = merged_df, family = poisson(link = "log"))
 summary(poisson_model)
+
+# residual plots
+pearson_resid <- residuals(poisson_model, type = "pearson")
+deviance_resid <- residuals(poisson_model, type = "deviance")
+plot(pearson_resid, main = "Pearson Residuals", ylab = "Pearson Residuals", xlab = "Fitted Values")
+abline(h = 0, col = "darkblue")
+plot(deviance_resid, main = "Deviance Residuals", ylab = "Deviance Residuals", xlab = "Fitted Values")
+abline(h = 0, col = "darkblue")
+#heat map
+selected_columns <- c("civilian_complaints_reported_2020", "diversity_metrix", "population", "Total_Less_lethal_force_2020")
+cor_matrix <- cor(merged_df[selected_columns], use = "complete.obs")
+corrplot(cor_matrix, method = "color", type = "full", order = "hclust", 
+         tl.col = "black", tl.srt = 45, 
+         diag = TRUE) 
 ```
-```
-
-## Note on Attribution
-
-In general, you should try to provide links to relevant resources, especially those that helped you. You don't have to link to every StackOverflow post you used but if there are explainers on aspects of the data or specific models that you found helpful, try to link to those. Also, try to link to other sources that might support (or refute) your analysis. These can just be regular hyperlinks. You don't need a formal citation.
+##  Limtations:
+Although there is a relationship between the two target variables, they are positively correlated, which is different from our common sense. That will lead us to figure out if there are any confounders related to the target variables. What's more, according to the residual plot, it seems like we encountered overdispersion. To address this, the next analytical step proposed is to apply a negative binomial regression, which can better handle overdispersion by introducing an extra parameter to account for the variance. This approach may provide a more accurate model fit for the data.
 
 
-If you are directly quoting from a source, please make that clear. You can show quotes using `>` like this
-
-```
-> To be or not to be.
-```
-
-> To be or not to be.
 
 -------
 
