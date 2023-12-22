@@ -1,5 +1,5 @@
 ---
-title: "MA [46]15 Final Project"
+title: "Our Data Journal"
 listing:
   contents: "posts/*/*.qmd"
   sort: "date desc"
@@ -11,4 +11,4 @@ page-layout: full
 title-block-banner: true
 ---
 
-
+![](images/blogpost.jpg)
