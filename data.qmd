@@ -4,25 +4,29 @@ description: We describe the sources of our data and the cleaning process.
 toc: true
 draft: FALSE
 ---
+---
+title: "Data🔢"
+output: html_document
+---
 
 ![](images/police-community.png)
 
 
-## Soruce of our Data
+## Source of our Data📊
 [![](images/scoreboard.png)](https://policescorecard.org)
 We found the data we need while doing research on police accountability while we came across this website on analyzing police conducts across the country. While browsing through the website, we found that they put all the source data they use in scoring police conducts into a [Google drive folder](https://drive.google.com/drive/folders/1XAT1uFPXj5AsvNTzFeNeeTXGLP09HEIh). The dataset we will be utilizing here will be the [Fact Checking dataset ](https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit?usp=sharing).
 
-#### Origins and Purpose of the Data:
+#### Origins and Purpose of the Data🚨:
 The Police Scorecard, the primary data source, represents the first extensive nationwide analysis of police performance in the United States. Covering over 16,000 law enforcement agencies, it provides a detailed evaluation based on numerous factors such as levels of police violence, accountability, racial bias, and other critical aspects of policing. The criteria for this scorecard were meticulously chosen through a collaborative effort involving a review of existing research literature, consultations with experts and activists in the field, and an examination of available policing datasets from various governmental levels. The primary objective of the Police Scorecard is to facilitate informed actions aimed at minimizing police use of force, enhancing accountability, and redefining public safety across communities.
 
-#### The Team Behind the Project:
+#### The Team Behind the Project 🙌:
 The mastermind behind the Police Scorecard is Samuel Sinyangwe, who collaborated with a diverse team comprising data scientists, designers, developers, organizers, and students nationwide. This team is united by their belief in leveraging data for promoting justice, accountability, and transformative change. Continuously evolving, the project's methodology is regularly updated to reflect new feedback and data availability from local, state, and federal agencies. It now includes broader indicators like police stops and searches, the extent of police militarization, analysis of policies and procedures, and outcomes related to disciplinary actions.
 
 
 
 
 
-## Overview of our Data
+## Overview of our Data👀
 
 Our analysis leverages detailed information from three key datasets found in the [Fact Checking dataset ](https://docs.google.com/spreadsheets/d/1AJFk9ILwxg2oJEDP4xj0C9Qi9lZLJNnxKG5NNPO__GA/edit?usp=sharing), each with its specific variables:
 
@@ -60,64 +64,64 @@ Our analysis leverages detailed information from three key datasets found in the
   * Percent Officers Native American: Proportion of officers who are Native American.
   * Percent Officers Other: Proportion of officers from other racial or ethnic backgrounds.
 
-Your [load_and_clean_data.R](/scripts/load_and_clean_data.R) file is how you will load and clean your data. Here is a an example of a very simple one.
+[load_and_clean_data.R](/scripts/data_cleaning.R)
 
 ```{r}
  source(
    "scripts/data_cleaning.R",
-   echo = FALSE # Use echo=FALSE or omit it to avoid code output  
+   echo = FALSE
  )
 ```
-You should never use absolute paths (eg. `/Users/danielsussman/path/to/project/` or `C:\MA415\\Final_Project\`).
-
-You might consider using the `here` function from the [`here` package](https://here.r-lib.org/articles/here.html) to avoid path problems.
-
-### Load and clean data script
-
-The idea behind this file is that someone coming to your website could largely replicate your analyses after running this script on the original data sets to clean them.
-This file might create a derivative data set that you then use for your subsequent analysis.
-Note that you don't need to run this script from every post/page.
-Instead, you can load in the results of this script, which could be plain text files or `.RData` files. In your data page you'll describe how these results were created. If you have a very large data set, you might save smaller data sets that you can use for exploration purposes.
-To link to this file, you can use `[cleaning script](/scripts/load_and_clean_data.R)` wich appears as [cleaning script](/scripts/load_and_clean_data.R). 
 
 
----
-title: "Data"
-output: html_document
----
+## Data Loading and Cleaning Process🧹
 
-### What Challenges do you forsee?
+* Missing Values in Various Variables: We encountered variables with NA (Not Available) values across our datasets. For instance, in datasets like cleansed_df1, use_for_force, cop_demo, and ori_lookup, we found variables with missing data. We decided to replace these NAs with zeros, particularly in variables where zeros were a meaningful representation, such as in count or frequency data.
+```{r}
+convert_na_to_zero <- function(data){
+  result <- data %>% mutate_all(~ifelse(is.na(.), 0, .))
+  return(result)
+}
+```
 
-I believe that there might be some challenges that will arise when working on the final project, encompassing various aspects such as collaboration and dealing with technical skills. Regarding teamwork, I foresee potential challenges where team members may have different viewpoints on aspects like which facets of the dataset to focus on and what type of analysis to conduct. Additionally, we will likely need to address time management and communication issues. In terms of the technical aspects, the dataset we have appears to contain a significant amount of data, necessitating thorough data cleaning and organization. We will surely need to spend enough time on understanding and refining our skills for handling this data effectively.
+* Column Names Across Datasets: We standardized the names of variables across all datasets for consistency. This process was crucial for variables with different naming conventions across different CSV files, such as those in cleansed_df1 and use_for_force_original. We used janitor::clean_names() to ensure that all variable names followed a uniform format.
 
-###What are the main questions you hope to address?
+* Selecting Relevant Variables for Analysis: We selectively chose variables from each dataset relevant to our analysis. For example, in the civilian_complaints dataset, we focused on variables like police_department, state, ori, civilian_complaints_sustained_2020, and others, discarding those not pertinent to our study.
 
-Does the increase in police funding have a decreased effect in settlement payment and reducing the number of internal affair complaints?
+* Creating the Diversity Metric Variable(See more below): A significant part of our data transformation involved creating a new variable, the 'diversity metric', from existing data. We derived this metric from variables starting with 'percent_officers' in the merged_df dataset. This new variable allowed us to analyze aspects of our data focusing on diversity, which was not immediately apparent from the raw data.
+```{r}
+calculate_diversity_metrix <- function(proportions) {
+  -sum(proportions * log(proportions, base = exp(1)), na.rm = TRUE) 
+}
+```
 
-How are civilian complaints, use of force, discrimination, and crime rate by race correlated and influence each other?
+* Variables for Merging Datasets: To prepare for merging datasets, we ensured that key variables, such as 'ORI' in use_for_force and cleansed_df1, were compatible across datasets. This was a critical step for accurately combining information from different sources.
+```{r}
+merged_df<-merged_df|>
+  mutate(
+    diversity_metrix=apply(select(merged_df, starts_with("percent_officers")), 1, calculate_diversity_metrix),
+    .after=7
+  )
+```
+
+## Shannon Diversity Index Application in Our Dataset🗂️
+![](images/diversity.png)
+
+  * Categories as Races: In our dataset, each race is treated as a distinct category. The Shannon Diversity Index allows us to measure how these racial categories are represented and distributed within the dataset, particularly focusing on the police force.
+  * Objective: Our main aim is to explore potential correlations or associations between racial diversity in the police force and the frequency or nature of civilian complaints. By applying this index, we can quantitatively evaluate these aspects.
+Working Principle of the Shannon Diversity Index:
+  * Abundance and Evenness: The index calculates diversity by taking into account not just the number of categories (in our case, racial groups) but also how evenly the individuals (police officers) are distributed among these categories.
+  * Formula and Calculation: The index is computed using a specific formula that considers the proportion of each category and then incorporates these proportions into a logarithmic equation to calculate diversity.
+  * Interpreting the Index: A higher value of the Shannon Diversity Index indicates greater diversity, reflecting not only a variety of categories but also a more uniform distribution among them. Conversely, a lower value suggests less diversity, potentially indicating overrepresentation or underrepresentation of certain groups.
 
 
-----
+### Significance in Our Research:
+  * Evaluating Inclusivity and Representation: The Shannon Diversity Index will be instrumental in assessing the level of inclusivity and representation of different racial groups in the police force. This is crucial for understanding the dynamics of diversity within law enforcement.
+  * Testing Hypotheses: By analyzing the diversity index results, we can critically examine our hypothesis about the relationship between racial diversity in the police force and civilian complaints. It helps us to determine if a more diverse police force correlates with lower rates of complaints, suggesting better community relations and understanding.
+  * Broader Implications: The findings derived from this index could provide valuable insights for policymakers and law enforcement agencies in addressing diversity-related issues and improving community-police relations.
 
-## Rubric: On this page
+By employing the Shannon Diversity Index in our analysis, we gain a nuanced and quantitative understanding of racial diversity within the police force, which is vital for testing our hypotheses and drawing meaningful conclusions about the impact of diversity on police-civilian interactions.
 
-You will
-
-* Describe where/how to find data.
-  * You must include a link to the original data source(s). Make sure to provide attribution to those who collected the data.
-  * Why was the data collected/curated? Who put it together? (This is important, if you don't know why it was collected then that might not be a good dataset to look at.
-* Describe the different data files used and what each variable means. 
-  * If you have many variables then only describe the most relevant ones and summarize the rest.
-* Describe any cleaning you had to do for your data.
-  * You *must* include a link to your `load_and_clean_data.R` file.
-  * Also, describe any additional R packages you used outside of those covered in class.
-  * Describe and show code for how you combined multiple data files and any cleaning that was necessary for that.
-  * Some repetition of what you do in your `load_and_clean_data.R` file is fine and encouraged if it helps explain what you did.
-* Organization, clarity, cleanliness of the page
-  * Make sure to remove excessive warnings, use clean easy-to-read code (without side scrolling), organize with sections, use bullets and other organization tools, etc.
-  * This page should be self-contained.
-  
-  
   
 
 

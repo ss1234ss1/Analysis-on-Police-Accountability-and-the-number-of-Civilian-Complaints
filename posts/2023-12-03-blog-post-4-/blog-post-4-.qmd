@@ -5,19 +5,13 @@ date: "2023-12-03"
 date-modified: "2023-12-03"
 draft: FALSE
 ---
-Part 0:
-Combine dataset
-Heatmap to show the correlations.
 
-Part 1:
-Null-model: Reg complains on populations(stan_glm). Reg complains of use of force(stan_glm)/(Poisson).
 
-Part 2:
-https://policetransparency.vera.org/ 
-Add related variables to model and find good adj-R^2
-(Police transparency score (how easy have access to the var) as another variable: Complaints About Police Misconduct, Use of Force)
-Poisson regression.
+### Next Steps 
+We decided to load 2 datasets into R: Use of Force Dataset and civilian Complaints Dataset
+Missing Values in Various Variables: We checked the first few rows of each sheet to understand the structure and content. We identified missing values, anomalies, or any inconsistencies in column names and data types. We encountered variables with NA (Not Available) values across our datasets. For instance, in datasets like cleansed_df1, “use_for_force”, “cop_demo”, and “ori_lookup”, we found variables with missing data. We decided to replace these NAs with zeros, particularly in variables where zeros were a meaningful representation, such as in count or frequency data.
+Column Names Across Datasets: We standardized the names of variables across all datasets for consistency. This process was crucial for variables with different naming conventions across different CSV files, such as those in cleansed_df1 and use_for_force_original. We used janitor::clean_names() to ensure that all variable names followed a uniform format.
+Selecting Relevant Variables for Analysis: We selectively choose variables from each dataset relevant to our analysis. For example, in the civilian_complaints dataset, we focused on variables like police_department, state, ori, civilian_complaints_sustained_2020, and others, discarding those not pertinent to our study.
+Variables for Merging Datasets: To prepare for merging datasets, we ensured that key variables, such as 'ORI' in use_for_force and cleansed_df1, were compatible across datasets. This was a critical step for accurately combining information from different sources. WE also want to use a heatmap to show the correlation we have with police diversity and complaints reports 
 
-Part 3:
-Gen graphs/plots: Residual plots 
-
+Creating the Diversity Metric Variable: A significant part of our data transformation involved creating a new variable, the 'diversity metric', from existing data. We derived this metric from variables starting with 'percent_officers' in the merged_df dataset, which was created by merging the Use of force dataset and cleansed_df1 dataset using the ORI identifier. These new variables allowed us to analyze aspects of our data focusing on diversity, which was not immediately apparent from the raw data.
