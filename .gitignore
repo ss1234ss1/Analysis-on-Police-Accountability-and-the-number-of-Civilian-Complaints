@@ -2,6 +2,11 @@
 .Rhistory
 .RData
 .Ruserdata
+# Ignore the _freeze directory
+_freeze/
+
+# Ignore the baaf3a50 directory
+baaf3a50/
 
 /.quarto/
 /dataset-ignore/
