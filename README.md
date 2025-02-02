@@ -4,7 +4,7 @@ This project is the final submission for the MA415 Data Science with R course by
 
 ---
 
-## 📖 About the Project
+##  About the Project
 
 This project investigates:
 - The impact of **police force diversity** on civilian complaints.
@@ -15,7 +15,7 @@ The project primarily uses the **Police Scorecard** database, a comprehensive na
 
 ---
 
-## 🗂 Project Structure
+##  Project Structure
 
 ### **Key Folders**
 - **`config/`**: Quarto configuration files for the website and report layout.
@@ -36,7 +36,7 @@ The project primarily uses the **Police Scorecard** database, a comprehensive na
 
 ---
 
-## 📊 Data Overview
+##  Data Overview
 
 ### **Sources**
 The project primarily utilizes the **Police Scorecard** database, accessible at [policescorecard.org](https://policescorecard.org/). This dataset consolidates information from:
@@ -60,7 +60,7 @@ The project primarily utilizes the **Police Scorecard** database, accessible at 
 
 ---
 
-## 🔎 Analysis and Findings
+##  Analysis and Findings
 
 ### **Research Questions**
 1. Does greater diversity within police departments correlate with fewer civilian complaints?
